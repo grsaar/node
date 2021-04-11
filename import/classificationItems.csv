@@ -1,0 +1,1001 @@
+id,parentId,name,classificationId
+1,,"Site Products",1
+2,1,"Ground Anchorages",1
+3,2,"Retaining Stabilizing Ground Anchors",1
+4,3,"Retaining Stabilizing Ground Components",1
+5,4,"Stabilizing Ground Anchor Heads",1
+6,4,"Stabilizing Ground Tendons",1
+7,3,"Stabilizing Ground Grouted Anchors",1
+8,3,"Stabilizing Ground Plate Anchors",1
+9,3,"Stabilizing Ground Rock Bolts",1
+10,3,"Stabilizing Ground Rock Anchors",1
+11,3,"Stabilizing Ground Anchor Tiebacks",1
+12,2,"Earth Reinforcement Anchors",1
+13,12,"Earth Reinforcement Soil Nails",1
+14,1,"Ground Improvement Products",1
+15,14,"Soil Stabilization Products",1
+16,15,"Soil Stabilization Injectable Chemicals",1
+17,15,"Soil Stabilization Pressure Grouting",1
+18,15,"Ground Freezing Soil Stabilization",1
+19,15,"Soil Stabilization Fills",1
+20,19,"Soil Stabilization Fill Blocks",1
+21,19,"Soil Stabilization Compressible Fill",1
+22,15,"Other Soil Stabilizations",1
+23,15,"Piped Field Drainage",1
+24,23,"Field Drainage Land Drainage Pipes",1
+25,15,"Field Drainage Blocks",1
+26,15,"Field Drainage Geocomposite Drains",1
+27,26,"Field Drainage Geocomposite Edge Drains",1
+28,26,"Field Drainage Geocomposite In Place Wall Drains",1
+29,15,"Geotextile Subsurface Drainage Filtration",1
+30,1,"Sheeting and Revetments",1
+31,30,"Sheeting Geosynthetics",1
+32,31,"Sheeting Geotextiles",1
+33,31,"Sheeting Geogrids",1
+34,31,"Sheeting Geomembranes",1
+35,31,"Sheeting Geocomposites",1
+36,31,"Sheeting Mulch Control Netting",1
+37,31,"Sheeting Synthetic Erosion Controls",1
+38,31,"Sheeting Re vegetation Mats",1
+39,31,"Sheeting Turf Reinforcement Mats",1
+40,30,"Revetments",1
+41,40,"Revetment Soil Blankets",1
+42,40,"Pool Revetments",1
+43,40,"Trench Revetments",1
+44,40,"Revetment Rock Linings",1
+45,40,"Revetment Ripraps",1
+46,1,"Retention Structures",1
+47,46,"Sheet Piles",1
+48,46,"Retaining Walls",1
+49,48,"Retaining Diaphragm Walls",1
+50,49,"Retaining Slurry Wall Membranes",1
+51,48,"Continuous Retaining Walls",1
+52,48,"Retaining Crib Walls",1
+53,46,"Gabions",1
+54,46,"Fascines",1
+55,1,"Slide and Avalanche Protection",1
+56,55,"Bolt Down Snow Fences",1
+57,55,"Clamp on Equipment",1
+58,1,"Pavements",1
+59,58,"Porous Paving",1
+60,58,"Roadways",1
+61,60,"Portable Roadways",1
+62,60,"Roadway Surfacing",1
+63,62,"Roadway Antiskid Texturing",1
+64,60,"Detectable Warning Surfaces for Roadways",1
+65,64,"Crosswalks",1
+66,64,"Warning Tiles",1
+67,58,"Runways",1
+68,67,"Portable Runway",1
+69,67,"Helicopter Landing Pads",1
+70,67,"Runway Surfacing",1
+71,70,"Runway Antiskid Texturing",1
+72,58,"Paving Blocks",1
+73,72,"Unit Pavers",1
+74,73,"Asphalt Block Pavers",1
+75,73,"Brick Pavers",1
+76,73,"Interlocking Precast Concrete Pavers",1
+77,73,"Precast Concrete Pavers",1
+78,73,"Pressed Pavers",1
+79,73,"Stone Pavers",1
+80,58,"Pavement Slabs",1
+81,58,"Pavement Drainage",1
+82,81,"Culverts",1
+83,82,"Pipe Culverts",1
+84,83,"Metal Pipe Arch Culverts",1
+85,82,"Concrete Culverts",1
+86,85,"Concrete Arch Buried Bridge Culverts",1
+87,85,"Concrete Arch Culverts",1
+88,85,"Concrete Box Culverts",1
+89,85,"Concrete Rigid Frame Culverts",1
+90,81,"Catch Basins",1
+91,81,"Channels",1
+92,81,"Cleanouts",1
+93,1,"Parking Controls",1
+94,93,"Parking Meters",1
+95,93,"Parking Ticket Dispensers",1
+96,93,"Parking Coin Machine Units",1
+97,93,"Parking Key and Card Control Units",1
+98,93,"Parking Gates",1
+99,93,"Parking Dividers",1
+100,93,"Parking Signs",1
+101,100,"Handicap Parking Signs",1
+102,100,"Parking Time Zone Signs",1
+103,100,"Parking Tow Away Signs",1
+104,1,"Site Barrier Products",1
+105,104,"Perimeter Entry Devices",1
+106,105,"Anti Ram Wedge Barriers",1
+107,104,"Perimeter Walls",1
+108,107,"Precast Perimeter Concrete Panel Perimeter Walls",1
+109,107,"Precast Perimeter Post Perimeter Walls",1
+110,104,"Perimeter Gates",1
+111,110,"Drop Arm Gates",1
+112,111,"Anti Ram Drop Arm Gates",1
+113,110,"Rolling Gates",1
+114,110,"Sliding Gates",1
+115,114,"Anti Ram Sliding Gates",1
+116,114,"Anti Climb Sliding Gates",1
+117,110,"Swinging Gates",1
+118,110,"Folding Gates",1
+119,104,"Gate Hardware",1
+120,104,"Fences",1
+121,120,"Barbed Wire Fences",1
+122,120,"Concertina Wire Fences",1
+123,120,"Composite Fences",1
+124,120,"Ornamental Metal Fences",1
+125,120,"Chain Link Metal Fences",1
+126,120,"Panel Fences",1
+127,120,"Plastic Fences",1
+128,120,"Post Fences",1
+129,120,"Rail Fences",1
+130,120,"Razor Wire Fences",1
+131,120,"Wood Fences",1
+132,120,"Fencing Fabrics",1
+133,120,"Fencing Accessories",1
+134,133,"Barbed Wire",1
+135,133,"Concertina Wire",1
+136,133,"Fence Posts",1
+137,1,"Landscaping",1
+138,137,"Plant Maintenance and Preparation Products",1
+139,138,"Topsoil",1
+140,139,"Loam",1
+141,139,"Peat Soil",1
+142,138,"Soil Fertilizers",1
+143,138,"Soil Herbicides",1
+144,143,"Combined Soil Fertilizer and Herbicides",1
+145,138,"Mulch",1
+146,138,"Soil Mats",1
+147,138,"Plant Netting",1
+148,138,"Landscaping Stakes",1
+149,138,"Landscaping Blankets",1
+150,138,"Landscaping Ground Covers",1
+151,138,"Landscaping Forms",1
+152,138,"Landscaping Stabilizers",1
+153,138,"Lime",1
+154,138,"Mowing Equipment",1
+155,154,"Lawnmowers",1
+156,154,"Garden Tractors",1
+157,138,"Pruning Equipment",1
+158,138,"Watering Equipment",1
+159,137,"Planting Accessories",1
+160,159,"Landscaping Edging",1
+161,159,"Landscape Timbers",1
+162,159,"Landscape Stone",1
+163,162,"Boulders",1
+164,159,"Planters",1
+165,159,"Tree Grates",1
+166,159,"Tree Grids",1
+167,159,"Tree Guards",1
+168,159,"Plant Tubs",1
+169,137,"Irrigation Equipment",1
+170,169,"Irrigation Sprinklers",1
+171,170,"Installed Sprinkler Heads",1
+172,170,"Portable Lawn Sprinklers",1
+173,169,"Irrigation Hoses",1
+174,173,"Irrigation Weep Hoses",1
+175,137,"Lawns and Grasses",1
+176,175,"Hydro Mulch",1
+177,175,"Grass Plugs",1
+178,175,"Grass Seeds and Soil Supplements",1
+179,175,"Sod",1
+180,137,"Plants",1
+181,180,"Shrubs",1
+182,180,"Trees",1
+183,180,"Plants",1
+184,180,"Plant Bulbs",1
+185,180,"Floral Plant",1
+186,180,"Non Flowering Plant",1
+187,137,"Pond Equipment",1
+188,187,"Pond Liners",1
+189,187,"Pond Filters",1
+190,1,"Site Furnishings",1
+191,190,"Bicycle Racks and Shelters",1
+192,191,"Bicycle Racks",1
+193,191,"Bicycle Shelters",1
+194,191,"Bicycle Lockers",1
+195,190,"Exterior Seating",1
+196,195,"Exterior Benches",1
+197,195,"Exterior Chairs",1
+198,190,"Exterior Tables",1
+199,190,"Patio Furniture",1
+200,199,"Patio Seating",1
+201,200,"Patio Chairs",1
+202,200,"Patio Benches",1
+203,200,"Patio Chaise Lounges",1
+204,200,"Patio Sofas",1
+205,199,"Patio Tables",1
+206,205,"Patio Dining Tables",1
+207,205,"Patio Sofa Tables",1
+208,190,"Exterior Trash Receptacles",1
+209,208,"Exterior Wood Trash Receptacles",1
+210,208,"Exterior Concrete Trash Receptacles",1
+211,208,"Exterior Metal Trash Receptacles",1
+212,190,"Exterior Specialties",1
+213,212,"Sundials",1
+214,212,"Garden Ornaments",1
+215,212,"Bird Houses",1
+216,212,"Bird Feeders",1
+217,212,"Bird Baths",1
+218,190,"Exterior Storage Structures",1
+219,218,"Storage Sheds",1
+220,218,"Barns",1
+221,190,"Flagpoles",1
+222,221,"Automatic Flagpoles",1
+223,221,"Ground Set Flagpoles",1
+224,221,"Nautical Flagpoles",1
+225,221,"Wall Mounted Flagpoles",1
+226,190,"Exterior Fountains",1
+227,226,"Exterior Ornamental Fountains",1
+228,190,"Memorials and Statuary",1
+229,190,"Monuments",1
+230,190,"Exterior Directional Signs",1
+231,230,"Finger Post Signs",1
+232,230,"Street Nameplates",1
+233,230,"Illuminated Directional Signs",1
+234,230,"Directional Sign Markers",1
+235,190,"Bollards",1
+236,235,"Active Anti Ram Bollards",1
+237,235,"Passive Anti Ram Bollards",1
+238,235,"Architectural Bollards",1
+239,190,"Public Lighting Columns",1
+240,1,"Athletic and Recreational Surfaces",1
+241,240,"Sports Field Surfacing",1
+242,240,"Playground Surfaces",1
+243,,"Structural and Exterior Enclosure Products",1
+244,243,"Loose Granular Fills", Aggregates
+245,244,"Powder Fillers",1
+246,245,"Mineral Powder Fillers",1
+247,245,"Metal Powder Fillers",1
+248,245,"Synthetic Powder Fillers",1
+249,245,"Residue Powder Fillers",1
+250,244,"Aggregates",1
+251,250,"Dense Fills and Aggregates",1
+252,250,"Lightweight Fills and Aggregates",1
+253,250,"Heavyweight Fills and Aggregates",1
+254,244,"Fibers and Shavings",1
+255,254,"Mineral Fibers and Shavings",1
+256,254,"Vegetable Fibers and Shavings",1
+257,254,"Synthetic Fibers and Shavings",1
+258,254,"Other Fibers and Shavings",1
+259,243,"Binding Agents and Admixtures",1
+260,259,"Binding Agents",1
+261,260,"Cement",1
+262,261,"Standard Cement",1
+263,261,"Specialized Cement",1
+264,263,"High Sulfate Resistant Cement",1
+265,263,"Low Alkali Cement",1
+266,263,"Low Heat Cement",1
+267,263,"Alumina Cement",1
+268,260,"Lime",1
+269,268,"Hydraulic Lime",1
+270,268,"Air Hardening Lime",1
+271,260,"Bitumen Asphalt",1
+272,260,"Resinous Binders",1
+273,260,"Gypsum",1
+274,259,"Cement Admixtures",1
+275,274,"Cement Plasticizing Agents",1
+276,274,"Cement Water Retaining Agents",1
+277,274,"Cement Air Entraining Agents",1
+278,274,"Cement Gas Generating Agents",1
+279,274,"Cement Setting Retarders",1
+280,274,"Cement Setting Accelerators",1
+281,274,"Cement Frostproofing Agents",1
+282,274,"Cement Waterproofing Agents",1
+283,274,"Cement Coloring Agents",1
+284,274,"Cement Admixtures for Injections",1
+285,274,"Cement Admixtures for Projections",1
+286,274,"Cement Adherence Proofing Agents",1
+287,274,"Cement Bonding Agents",1
+288,274,"Cement Replacements",1
+289,274,"Other Cement Admixtures",1
+290,259,"Gypsum Admixtures",1
+291,243,"Mixtures",1
+292,291,"Concretes",1
+293,292,"Cementitious Concretes",1
+294,292,"Resinous Concretes",1
+295,292,"Hydrocarbon Concretes",1
+296,292,"Low Density Concretes",1
+297,291,"Mortars",1
+298,297,"Portland Cement Lime Mortars",1
+299,297,"Masonry Cement Mortars",1
+300,297,"Mortar Cements",1
+301,297,"Gypsum Based Mortars",1
+302,297,"Resinous Mortar",1
+303,297,"Chemical Resistant Mortar",1
+304,297,"Refractory Mortar",1
+305,297,"Premixed Mortar",1
+306,297,"Surface Bonding Mortar",1
+307,297,"Mortar Pigments",1
+308,291,"Grouts",1
+309,308,"Concrete Grouts",1
+310,309,"Shrink Resistant Concrete Grouts",1
+311,309,"Catalyzed Metallic Concrete Grouts",1
+312,309,"Epoxy Concrete Grouts",1
+313,309,"Nonmetallic Concrete Grouts",1
+314,308,"Masonry Grouts",1
+315,314,"Chemical Resistant Masonry Grouts",1
+316,243,"Profiles",1
+317,316,"Rigid Profiles",1
+318,317,"Ferrous Metal Rigid Profiles",1
+319,317,"Non Ferrous Metal Rigid Profiles",1
+320,317,"Wood Rigid Profiles",1
+321,320,"Lumber Rigid Profiles",1
+322,321,"Hardwood Rigid Profiles",1
+323,321,"Softwood Rigid Profiles",1
+324,321,"Laminated Rigid Profiles",1
+325,320,"Non Structural Heavy Timber Rigid Profiles",1
+326,317,"Plastic Rigid Profiles",1
+327,317,"Composite Rigid Profiles",1
+328,316,"Flexible Profiles",1
+329,328,"Plastic Flexible Profiles",1
+330,328,"Rubber Flexible Profiles",1
+331,330,"Natural Rubber Flexible Profiles",1
+332,330,"Butyl Flexible Profiles",1
+333,330,"Neoprene Flexible Profiles",1
+334,330,"Silicone Flexible Profiles",1
+335,330,"Polysulfide Flexible Profiles",1
+336,316,"Precast Profiles",1
+337,336,"Precast Hollow Core Sheets",1
+338,336,"Precast Tees",1
+339,336,"Precast Double Tees",1
+340,316,"Lath",1
+341,340,"Gypsum Lath",1
+342,340,"Lead Lined Lath",1
+343,340,"Metal Lath",1
+344,340,"Veneer Plaster Base Lath",1
+345,340,"Wood Lath",1
+346,243,"Sheets", Boards
+347,346,"Thin Flexible Sheets",1
+348,347,"Thin Sheets",1
+349,348,"Thin Metal Sheets",1
+350,348,"Thin Wood Sheets",1
+351,348,"Building Papers",1
+352,348,"Thin Plastic Sheets",1
+353,348,"Thin Rubber Sheets",1
+354,347,"Textiles",1
+355,347,"Mesh for General Use",1
+356,346,"Rigid Sheets", Slabs
+357,356,"Solid Sheets",1
+358,357,"Solid Stone Sheets",1
+359,357,"Solid Cementitious Sheets",1
+360,357,"Solid Mineral Sheets",1
+361,357,"Solid Glass Sheets",1
+362,357,"Solid Metal Sheets",1
+363,357,"Solid Wood Based Sheets",1
+364,357,"Solid Plastic Sheets",1
+365,357,"Solid Resin Sheets",1
+366,357,"Solid Fiberglass Sheets",1
+367,356,"Hollow Core Sheets",1
+368,367,"Wood Based Hollow Core Sheets",1
+369,367,"Mineral Hollow Core Sheets",1
+370,367,"Metal Hollow Core Sheets",1
+371,367,"Plastic Hollow Core Sheets",1
+372,346,"Gratings",1
+373,346,"Blankets, Quilts",1
+374,243,"Blocks and Bricks",1
+375,374,"Concrete Masonry Units",1
+376,375,"Concrete Blocks",1
+377,375,"Exposed Aggregate Concrete Masonry Units",1
+378,375,"Fluted Concrete Masonry Units",1
+379,375,"Interlocking Concrete Masonry Units",1
+380,375,"Molded Face Concrete Masonry Units",1
+381,375,"Prefaced Concrete Masonry Units",1
+382,375,"Preinsulated Concrete Masonry Units",1
+383,375,"Sound Absorbing Concrete Masonry Units",1
+384,375,"Split Face Concrete Masonry Units",1
+385,374,"Calcium Silicate Masonry Units",1
+386,374,"Glass Masonry Units",1
+387,374,"Adobe Masonry Units",1
+388,374,"Clay Masonry Units",1
+389,388,"Common Bricks",1
+390,388,"Face Bricks",1
+391,388,"Fire Bricks",1
+392,388,"Glazed Bricks",1
+393,388,"Ceramic Glazed Clay Masonry Units",1
+394,388,"Clay Tile",1
+395,388,"Structural Clay Tiles",1
+396,388,"Clay Flue Linings",1
+397,388,"Terra Cotta Units",1
+398,374,"Masonry Anchorage and Reinforcement",1
+399,398,"Masonry Reinforcing",1
+400,399,"Continuous Joint Reinforcing",1
+401,399,"Reinforcing Bars",1
+402,398,"Masonry Ties",1
+403,402,"Flexible Masonry Ties",1
+404,402,"Masonry Veneer Ties",1
+405,402,"Rigid Masonry Ties",1
+406,398,"Masonry Anchors",1
+407,406,"Masonry Veneer Anchors",1
+408,406,"Stone Masonry Anchors",1
+409,374,"Special Profiles for Masonry",1
+410,409,"Special Masonry Shapes",1
+411,409,"Masonry Sills and Thresholds",1
+412,409,"Masonry Moldings",1
+413,409,"Masonry Copings",1
+414,409,"Masonry Quoins",1
+415,409,"Masonry Cornices",1
+416,374,"Structural Support for Masonry",1
+417,416,"Lintels",1
+418,417,"Lintel Former Units",1
+419,416,"Wall Connectors and Starters",1
+420,416,"Supports for Masonry",1
+421,420,"Masonry Angles",1
+422,421,"Masonry Shelf Angles",1
+423,420,"Gussets",1
+424,374,"Ancillary Products for Masonry",1
+425,424,"Embedded Flashing",1
+426,424,"Cavity Closers",1
+427,424,"Cavity Weep and Ventilation Units",1
+428,427,"Cavity Weeps",1
+429,427,"Cavity Vents",1
+430,427,"Cavity Drainage Material",1
+431,424,"Masonry Joint Materials",1
+432,431,"Masonry Control Joints",1
+433,431,"Masonry Expansion Joints",1
+434,424,"Airbricks",1
+435,243,"Mechanical Fasteners", Adhesives
+436,435,"Mechanical Fasteners",1
+437,436,"Cast In Anchorages",1
+438,437,"Rail Anchors",1
+439,437,"Screw Cases",1
+440,437,"Anchor Blocks",1
+441,437,"Cast In Anchorages Inserts",1
+442,441,"Cast In Anchorages Inserts Adjustable Wedges",1
+443,441,"Cast In Anchorages Inserts Adjustable Boxes",1
+444,441,"Threaded Cast In Anchorages Inserts",1
+445,437,"Dovetail Slots",1
+446,436,"Multi Purpose Mechanical Fasteners",1
+447,446,"Plugs",1
+448,446,"Staples",1
+449,446,"Nails",1
+450,446,"Rivets",1
+451,446,"Screws",1
+452,446,"Bolts and Nuts",1
+453,446,"Threaded Rods and Nuts",1
+454,446,"Bandings",1
+455,436,"Structural Mechanical Fasteners in Hardened Concrete and Masonry",1
+456,455,"Expansion Anchors",1
+457,455,"Undercut Anchors",1
+458,455,"Bonded Anchors",1
+459,436,"Mechanical Fasteners for Metal Structures",1
+460,436,"Mechanical Fasteners for Wood Structures",1
+461,460,"Nail Plates",1
+462,460,"Wood Connectors",1
+463,460,"Framing Anchors",1
+464,436,"Mechanical Fasteners for Glass Structures",1
+465,435,"Welded Joint Products",1
+466,465,"Soldering Products",1
+467,465,"Brazing Products",1
+468,465,"Welding Products",1
+469,435,"Adhesives",1
+470,469,"Natural Adhesives and Glues",1
+471,469,"Synthetic Adhesives",1
+472,469,"Sound Proofing Adhesive",1
+473,435,"General Purpose Tape",1
+474,435,"Joint Fillers", Sealants
+475,474,"Joint Fillers",1
+476,475,"Backer Rods",1
+477,474,"Putties",1
+478,474,"Construction Sealants",1
+479,478,"Elastomeric Construction Sealants",1
+480,478,"Rigid Construction Sealants",1
+481,478,"Sanitary Construction Sealants",1
+482,478,"Chemical Resistant Construction Sealants",1
+483,478,"Water Immersed Construction Sealants",1
+484,474,"Preformed Joint Seals",1
+485,484,"Compression Seals",1
+486,484,"Joint Gaskets",1
+487,435,"Ropes", Wires
+488,487,"Ropes",1
+489,487,"Wires",1
+490,487,"Cables",1
+491,243,"Thermal and Moisture Protective Products",1
+492,491,"Fireproofing",1
+493,492,"Board Fireproofing",1
+494,493,"Calcium Silicate Board Fireproofing",1
+495,493,"Slag Fiberboard Fireproofing",1
+496,492,"Blanket Fireproofing",1
+497,496,"Blanket Fireproofing Smoke Containment Barriers",1
+498,492,"Fireproofing Coatings",1
+499,498,"Cement Aggregate Fireproofing",1
+500,498,"Cementitious Fireproofing",1
+501,498,"Foamed Magnesium Oxychloride Fireproofing",1
+502,498,"Intumescent Mastic Fireproofing",1
+503,498,"Magnesium Cement Fireproofing",1
+504,498,"Mineral Fiber Cementitious Fireproofing",1
+505,498,"Miner Fiber Fireproofing",1
+506,491,"Firestopping",1
+507,506,"Penetrations Firestopping",1
+508,507,"Annular Space Protection Firestopping",1
+509,507,"Fire Resistant Joint Sealants",1
+510,507,"Firestopping Foams",1
+511,510,"Intumescent Firestopping Foams",1
+512,510,"Silicone Firestopping Foams",1
+513,507,"Firestopping Mortars",1
+514,507,"Firestopping Pillows",1
+515,507,"Firestopping Thermal Barriers for Plastics",1
+516,506,"Fire Safing",1
+517,516,"Fire Safing Fibrous Blankets",1
+518,516,"Fire Safing Sealants",1
+519,516,"Fire Safing Clip Anchors",1
+520,491,"Dampproofings",1
+521,520,"Dampproofing Membranes",1
+522,520,"Dampproofing Coatings",1
+523,522,"Bituminous Dampproofing Coatings",1
+524,522,"Cementitious Dampproofing Coatings",1
+525,491,"Waterproofing",1
+526,525,"Built Up Bituminous Waterproofing",1
+527,525,"Sheet Waterproofing",1
+528,527,"Bituminous Sheet Waterproofing",1
+529,527,"Elastomeric Sheet Waterproofing",1
+530,527,"Modified Bituminous Sheet Waterproofing",1
+531,527,"Thermoplastic Sheet Waterproofing",1
+532,525,"Fluid Applied Waterproofing",1
+533,532,"Hot Applied Rubberized Asphalt",1
+534,525,"Sheet Metal Waterproofing",1
+535,525,"Cementitious and Reactive Waterproofing",1
+536,535,"Acrylic Modified Cement Waterproofing",1
+537,535,"Crystalline Waterproofing",1
+538,535,"Metal Oxide Waterproofing",1
+539,525,"Bentonite Waterproofing",1
+540,539,"Bentonite Panel Waterproofing",1
+541,539,"Bentonite Sheet Waterproofing",1
+542,525,"Waterproof Traffic Coatings",1
+543,542,"Pedestrian Waterproof Traffic Coatings",1
+544,542,"Vehicular Waterproof Traffic Coatings",1
+545,491,"Thermal Insulation",1
+546,545,"Slab and Board Thermal Insulation",1
+547,546,"Polystyrene Slab and Board Thermal Insulation",1
+548,547,"Expanded Polystyrene Slab and Board Thermal Insulation",1
+549,547,"Extruded Polystyrene Slab and Board Thermal Insulation",1
+550,546,"Urethane Slab and Board Thermal Insulation",1
+551,546,"Perlite Slab and Board Thermal Insulation",1
+552,546,"Fiberglass Slab and Board Thermal Insulation",1
+553,545,"Blanket Thermal Insulation",1
+554,553,"Fiberglass Blanket Thermal Insulation",1
+555,553,"Rock Wool Blanket Thermal Insulation",1
+556,545,"Thermal Insulation Coatings",1
+557,556,"Sprayed Thermal Insulation Coatings",1
+558,557,"Sprayed Cellulose Thermal Insulation Coatings",1
+559,545,"Loose Fill Thermal Insulation",1
+560,559,"Granular Fill Thermal Insulation",1
+561,491,"Sound Isolation Insulation",1
+562,561,"Slab and Board Sound Isolation Insulation",1
+563,561,"Fiberglass Slab and Board Sound Isolation Insulation",1
+564,561,"Blanket Sound Isolation Insulation",1
+565,564,"Fiberglass Blanket Sound Isolation Insulation",1
+566,564,"Rock Wool Blanket Sound Isolation Insulation",1
+567,561,"Sound Isolation Coatings",1
+568,561,"Sound Isolation Loose Fills",1
+569,568,"Granular Sound Isolation Loose Fills",1
+570,491,"Damage Prevention Products",1
+571,570,"Products for Prevention of Biological Damage",1
+572,571,"Coatings for Prevention of Biological Damage",1
+573,570,"Products for Prevention of Chemical Damage",1
+574,573,"Tiles and Slabs for Prevention of Chemical Damage",1
+575,573,"Sheets for Prevention of Chemical Damage",1
+576,573,"Coatings for Prevention of Chemical Damage",1
+577,570,"Products for Prevention of Abrasive Wear",1
+578,491,"Air Barriers",1
+579,491,"Vapor Barriers",1
+580,243,"Maintenance Products and Chemicals for Construction",1
+581,580,"Cleaning and Maintenance Products",1
+582,581,"Cleaning Products",1
+583,581,"Maintenance Products",1
+584,581,"Combined Cleaning and Protection Products",1
+585,580,"Repair Products",1
+586,585,"Repair Mortars",1
+587,585,"Concrete Restoration and Cleaning Products",1
+588,587,"Concrete Cleaning Products",1
+589,587,"Concrete Resurfacing Products",1
+590,587,"Concrete Rehabilitation Products",1
+591,585,"Masonry Restoration and Cleaning Products",1
+592,591,"Unit Masonry Restoration Products",1
+593,591,"Stone Restoration products",1
+594,591,"Unit Masonry Cleaning Products",1
+595,591,"Stone Cleaning products",1
+596,585,"Metal Restoration and Cleaning Products",1
+597,585,"Wood and Plastic Restoration and Cleaning Products",1
+598,597,"Wood Restoration and Cleaning Products",1
+599,597,"Plastic Restoration and Cleaning Products",1
+600,580,"Chemicals for Construction",1
+601,600,"Solvents",1
+602,600,"Acids",1
+603,600,"Alkalis",1
+604,600,"Salts",1
+605,243,"Foundations",1
+606,605,"Foundation Piles",1
+607,606,"Foundation Pile Components",1
+608,607,"Pile Casings (Linings)",1
+609,607,"Cores and Mandrels",1
+610,607,"Pile Extension Pieces",1
+611,607,"Pile Shoes",1
+612,607,"Pile Splices",1
+613,607,"Pile Caps",1
+614,606,"Driven Piles",1
+615,614,"Composite Driven Piles",1
+616,614,"Concrete Filled Steel Driven Piles",1
+617,614,"Precast Concrete Driven Piles",1
+618,614,"Rolled Steel Section Driven Piles",1
+619,614,"Unfilled Tubular Steel Driven Piles",1
+620,614,"Wood Driven Piles",1
+621,614,"Sheet Driven Piles",1
+622,606,"Screw Piles",1
+623,605,"Caissons Foundation Casings",1
+624,623,"Well Foundation Casings",1
+625,623,"Caissons",1
+626,605,"Shallow Foundations",1
+627,626,"Column Bases",1
+628,626,"Grade Beams",1
+629,626,"Strip Foundation Blocks",1
+630,605,"Special Foundations",1
+631,630,"Controlled Modulus Columns",1
+632,630,"Other Special Foundations",1
+633,243,"Structural Concrete Products",1
+634,633,"Structural Concrete",1
+635,633,"Ready Mixed Concrete",1
+636,633,"Precast Structural Concrete",1
+637,633,"Concrete Formwork",1
+638,637,"Steel Forms",1
+639,637,"Prefabricated Stair Forms",1
+640,637,"Concrete Form Liners",1
+641,637,"Insulated Concrete Forms",1
+642,633,"Non Formwork",1
+643,633,"Reinforcement and Prestressing Components",1
+644,643,"Reinforcement Components",1
+645,644,"Reinforcing Steel",1
+646,644,"Reinforcement Steel Mesh",1
+647,646,"Welded Wire Fabric Reinforcing",1
+648,644,"Fibrous Reinforcing",1
+649,648,"Steel Fibrous Reinforcing",1
+650,648,"Synthetic Fibrous Reinforcing",1
+651,644,"Reinforcement Couplers",1
+652,644,"Reinforcement Spacers",1
+653,644,"Reinforcement Accessories",1
+654,643,"Prestressing Components",1
+655,654,"Stressing Tendons",1
+656,655,"Steel Stressing Tendons",1
+657,656,"Steel Strand Stressing Tendons",1
+658,656,"Steel Wire Stressing Tendons",1
+659,656,"Steel Bar Stressing Tendons",1
+660,655,"Glass Fibers",1
+661,654,"Steel Bars",1
+662,654,"Glass Fiber Tendons",1
+663,654,"Prestressing Couplers",1
+664,654,"Tendon Sheathing",1
+665,664,"Tendon Sheathing Ducts",1
+666,654,"Prestressing Anchorages",1
+667,643,"Post Tensioning Products",1
+668,643,"Complete Reinforcement Cages",1
+669,643,"Cast In Jointing",1
+670,669,"Expansion and Contraction Joints",1
+671,669,"Waterstops",1
+672,633,"Concrete Finishing Products",1
+673,672,"Stamped Concrete Finishing Products",1
+674,672,"Colored Concrete Finishing Products",1
+675,243,"Envelope Enclosure Products",1
+676,675,"Sliding Glass Wall Systems",1
+677,675,"Folding Glass Wall Systems",1
+678,675,"Wall Exteriors",1
+679,678,"Blast Resistant Wall Exteriors",1
+680,675,"Infill Facades",1
+681,680,"Exterior Wall Assemblies",1
+682,675,"Precast Concrete Facade",1
+683,682,"Cladding and Curtainwall Panels",1
+684,683,"Opening Infill Units",1
+685,683,"Imbedded Material Finish Mix", Tiles
+686,675,"Entrances",1
+687,686,"Aluminum-Framed Entrances",1
+688,687,"Automatic Aluminum-Framed Entrances",1
+689,687,"Revolving Door Aluminum-Framed  Entrances",1
+690,687,"Balanced Door Aluminum-Framed  Entrances",1
+691,687,"Pressure-Resistant Aluminum-Framed  Entrances",1
+692,687,"Intensive Care Unit/Critical Care Unit Aluminum-Framed  Entrances",1
+693,686,"Bronze-Framed Entrances",1
+694,693,"Automatic Bronze-Framed Entrances",1
+695,693,"Revolving Door Bronze-Framed  Entrances",1
+696,693,"Balanced Door Bronze-Framed  Entrances",1
+697,693,"Pressure-Resistant Bronze-Framed  Entrances",1
+698,693,"Intensive Care Unit/Critical Care Unit Bronze-Framed  Entrances",1
+699,686,"Stainless-Steel-Framed Entrances",1
+700,699,"Automatic Stainless-Steel-Framed Entrances",1
+701,699,"Revolving Door Stainless-Steel-Framed  Entrances",1
+702,699,"Balanced Door Stainless-Steel-Framed  Entrances",1
+703,699,"Pressure-Resistant Stainless-Steel-Framed  Entrances",1
+704,699,"Intensive Care Unit/Critical Care Unit Stainless-Steel-Framed  Entrances",1
+705,686,"Steel-Framed Entrances",1
+706,705,"Automatic Steel-Framed Entrances",1
+707,705,"Revolving Door  Steel-Framed  Entrances",1
+708,705,"Balanced Door  Steel-Framed  Entrances",1
+709,705,"Pressure-Resistant  Steel-Framed  Entrances",1
+710,705,"Intensive Care Unit/Critical Care Unit  Steel-Framed  Entrances",1
+711,686,"All-Glass Entrances",1
+712,711,"Automatic All-Glass Entrances",1
+713,711,"Revolving Door  All-Glass  Entrances",1
+714,711,"Balanced Door  All-Glass  Entrances",1
+715,711,"Pressure-Resistant  All-Glass Entrances",1
+716,711,"Intensive Care Unit/Critical Care Unit All-Glass Entrances",1
+717,675,"Storefronts",1
+718,717,"Aluminum-Framed Storefronts",1
+719,718,"Automatic Aluminum-Framed Storefronts",1
+720,718,"Revolving Door Aluminum-Framed  Storefronts",1
+721,718,"Balanced Door Aluminum-Framed  Storefronts",1
+722,718,"Pressure-Resistant Aluminum-Framed  Storefronts",1
+723,718,"Intensive Care Unit/Critical Care Unit Aluminum-Framed  Storefronts",1
+724,717,"Bronze-Framed Storefronts",1
+725,724,"Automatic Bronze-Framed Storefronts",1
+726,724,"Revolving Door Bronze-Framed  Storefronts",1
+727,724,"Balanced Door Bronze-Framed  Storefronts",1
+728,724,"Pressure-Resistant Bronze-Framed  Storefronts",1
+729,724,"Intensive Care Unit/Critical Care Unit Bronze-Framed  Storefronts",1
+730,717,"Stainless-Steel-Framed Storefronts",1
+731,730,"Automatic Stainless-Steel-Framed Storefronts",1
+732,730,"Revolving Door Stainless-Steel-Framed  Storefronts",1
+733,730,"Balanced Door Stainless-Steel-Framed Storefronts",1
+734,730,"Pressure-Resistant Stainless-Steel-Framed  Storefronts",1
+735,730,"Intensive Care Unit/Critical Care Unit Stainless-Steel-Framed  Storefronts",1
+736,717,"Steel-Framed Storefronts",1
+737,736,"Automatic Steel-Framed Storefronts",1
+738,736,"Revolving Door  Steel-Framed  Storefronts",1
+739,736,"Balanced Door  Steel-Framed  Storefronts",1
+740,736,"Pressure-Resistant  Steel-Framed  Storefronts",1
+741,736,"Intensive Care Unit/Critical Care Unit  Steel-Framed  Storefronts",1
+742,717,"All-Glass Storefronts",1
+743,742,"Automatic All-Glass Storefronts",1
+744,742,"Revolving Door  All-Glass  Storefronts",1
+745,742,"Balanced Door  All-Glass  Storefronts",1
+746,742,"Pressure-Resistant  All-Glass Storefronts",1
+747,742,"Intensive Care Unit/Critical Care Unit All-Glass Storefronts",1
+748,675,"Precast Modules",1
+749,675,"Glazed Facade and Roof Structures",1
+750,749,"Curtain Walls",1
+751,750,"Curtain Wall Components",1
+752,751,"Curtain Wall Frames",1
+753,751,"Curtain Wall Sections",1
+754,751,"Curtain Wall Infill Panels",1
+755,750,"Metal Framed Curtain Wall",1
+756,750,"Translucent Curtain Wall Assemblies",1
+757,749,"Structural Glazing",1
+758,757,"Structural Glass Curtain Walls",1
+759,749,"Suspended Glazing",1
+760,749,"Patent Glazing",1
+761,749,"Glazed Roof Structures",1
+762,761,"Sections for Glazed Roofs",1
+763,761,"Sloped Glazing Assemblies",1
+764,761,"Translucent Roof Assemblies",1
+765,761,"Translucent Wall Assemblies",1
+766,243,"Framing Products",1
+767,766,"Structural Frames",1
+768,767,"Beam Column Frames",1
+769,767,"Column Slab Frames",1
+770,769,"Columns",1
+771,769,"Beams",1
+772,767,"Portal Frames",1
+773,767,"Structural Racking",1
+774,767,"Structural Bearings",1
+775,774,"Structural Roller Bearings",1
+776,774,"Structural Slide Bearings",1
+777,774,"Structural Rocker Bearings",1
+778,774,"Structural Fixed Bearings",1
+779,767,"Vibration and Earthquake Controls",1
+780,766,"Non Structural Framing Products",1
+781,766,"Space Frames",1
+782,781,"Booms Braces",1
+783,781,"Couplers",1
+784,781,"Complete Space Frames",1
+785,766,"Geodesic Structures",1
+786,766,"Rafters", Beams
+787,786,"Trussed Rafters",1
+788,786,"Trussed Beams and Joists",1
+789,788,"Trussed Metal Joists",1
+790,788,"Trussed Composite Joist Assemblies",1
+791,788,"Trussed Metal Web Wood Joists",1
+792,788,"Wood Trusses",1
+793,788,"Metal Trusses",1
+794,786,"Web Beams and Joists",1
+795,794,"Wood Joists",1
+796,794,"Wood Beams",1
+797,794,"Heavy Timber Construction",1
+798,794,"Engineered Wood Products",1
+799,786,"Precast Concrete Beams",1
+800,799,"Precast Concrete Doubletee Beams",1
+801,799,"Precast Concrete Hollowcore Beams",1
+802,799,"Precast Concrete Inverted Tee Beams",1
+803,799,"Precast Concrete Spandrel Beams",1
+804,766,"Structural Walls",1
+805,804,"Concrete Structural Walls",1
+806,804,"Masonry Structural Walls",1
+807,804,"Wood Framed Structural Walls",1
+808,804,"Metal Framed Structural Walls",1
+809,804,"Structural Panels",1
+810,809,"Cementitious Reinforced Structural Panels",1
+811,809,"Stressed Skin Structural Panels",1
+812,809,"Structural Insulated Panels",1
+813,804,"Other Structural Walls",1
+814,766,"Structural Floors and Flat Roofs",1
+815,814,"Structural Floor Decks",1
+816,815,"Concrete Structural Floor Decks",1
+817,815,"Metal Structural Floor Decks",1
+818,817,"Raceway Deck Systems",1
+819,817,"Acoustical Metal Floor Decks",1
+820,815,"Wood Structural Floor Decks",1
+821,814,"Structural Roof Decks",1
+822,821,"Concrete Structural Roof Decks",1
+823,821,"Metal Structural Roof Decks",1
+824,823,"Acoustical Metal Roof Deck",1
+825,821,"Wood Structural Roof Decks",1
+826,814,"Structural Grating Floors",1
+827,814,"Balconies and Overhang Units",1
+828,827,"Balcony Components",1
+829,828,"Balcony Holders and Mechanical Fasteners",1
+830,827,"Concrete Balconies and Overhang Units",1
+831,827,"Metal Balconies and Overhang Units",1
+832,827,"Wood Balconies and Overhang Units",1
+833,766,"Structural Profiled Roofs",1
+834,833,"Prefabricated Shell Roofs",1
+835,833,"Simulated Stones",1
+836,243,"Multi-Function Exterior Coverings", Claddings
+837,836,"Multi-Function Exterior Claddings",1
+838,836,"Exterior Wall Cladding",1
+839,836,"Exterior Siding",1
+840,839,"Metal Exterior Siding",1
+841,839,"Composition Exterior Siding",1
+842,839,"Mineral Fiber Cement Exterior Siding",1
+843,839,"Plastic Exterior Siding",1
+844,839,"Wood Exterior Siding",1
+845,836,"Multi Function Exterior Linings",1
+846,845,"Sheathing Products",1
+847,836,"Exterior Plasters",1
+848,836,"Preformed Exterior Casings",1
+849,836,"Ancillary Products for Coverings and Claddings",1
+850,849,"Supports for Coverings and Claddings",1
+851,849,"Mechanical Fasteners for Coverings and Claddings",1
+852,849,"Movement and Dividing Joints for Coverings and Claddings",1
+853,849,"Joint Coverings", Flashings
+854,849,"Reinforcements for Coverings and Claddings",1
+855,849,"Trims", Edgings
+856,849,"Spacers",1
+857,849,"Profile Fillers",1
+858,849,"Underlays", Linings
+859,849,"Beddings Adhesives for Coverings and Claddings",1
+860,849,"Sealants for Coverings and Claddings",1
+861,243,"Roof Coverings", Claddings
+862,861,"Exterior Roof Panels",1
+863,862,"Exterior Metal Roof Panels",1
+864,862,"Exterior Plastic Roof Panels",1
+865,862,"Exterior Wood Roof Panels",1
+866,862,"Exterior Composite Roof Panels",1
+867,862,"Exterior Faced Roof Panels",1
+868,862,"Exterior Aggregate Coated Panels",1
+869,862,"Exterior Porcelain Enameled Faced Panels",1
+870,862,"Exterior Tile Faced Panels",1
+871,862,"Exterior Fiber Reinforced Cementitious Panels",1
+872,862,"Exterior Glass Fiber Reinforced Cementitious Panels",1
+873,862,"Exterior Miner Fiber Reinforced Cementitious Panels",1
+874,861,"Roof Underlayment",1
+875,861,"Roof Shingles",1
+876,875,"Asphalt Roof Shingles",1
+877,875,"Fiberglass Reinforced Roof Shingles",1
+878,875,"Metal Roof Shingles",1
+879,875,"Mineral Fiber Cement Roof Shingles",1
+880,875,"Plastic Roof Shingles",1
+881,875,"Porcelain Enamel Roof Shingles",1
+882,875,"Wood Shingles",1
+883,875,"Concrete Roof Shingles",1
+884,861,"Roof Tiles",1
+885,884,"Clay Roof Tiles",1
+886,884,"Concrete Roof Tiles",1
+887,884,"Metal Roof Tiles",1
+888,884,"Mineral Fiber Cement Roof Tiles",1
+889,884,"Plastic Roof Tiles",1
+890,884,"Ceramic Roof Tiles",1
+891,884,"Tile Roof Mechanical Fasteners",1
+892,861,"Natural Stone Roofing",1
+893,892,"Roof Slates",1
+894,893,"Slate Roof Mechanical Fasteners",1
+895,861,"Shake Roofing",1
+896,895,"Wood Shakes Roofing",1
+897,861,"Flat Roofing",1
+898,897,"Acoustical Metal Deck Roofing",1
+899,897,"Structural Deck Roofing",1
+900,899,"Concrete Structural Deck Roofing",1
+901,899,"Metal Structural Deck Roofing",1
+902,897,"Wood Decking Roofing",1
+903,861,"Roof Finish Coating",1
+904,861,"Roof Cladding",1
+905,904,"Roof Cladding Sheets",1
+906,905,"Metal Roof Panels",1
+907,905,"Sheet Metal Roofing",1
+908,904,"Roof Battens Cladding",1
+909,861,"Roof Coverings",1
+910,909,"Thatched Roofing",1
+911,909,"Sod Roofing",1
+912,909,"Vegetated Roof Covering",1
+913,912,"Vegetated Roof Planting Modules",1
+914,909,"Coated Foam Roof Covering",1
+915,861,"Roof Membranes",1
+916,915,"Single Layer Roof Membranes",1
+917,916,"Chlorinated Polyethylene (CPE) Single Layer Roof Membranes",1
+918,916,"Chlorosulfonated Polyethylene (CSPE) Single Layer Roof Membranes",1
+919,916,"Copolymer Alloy (CPA) Single Layer Roof Membranes",1
+920,916,"Elastomeric Single Layer Roof Membranes",1
+921,916,"Ethylene Interpolymer (EIP) Single Layer Roof Membranes",1
+922,916,"Ethylene Propylene Diene Monomer (EPDM) Single Layer Roof Membranes",1
+923,916,"Nitrile Butadiene Polymer (NBP) Single Layer Roof Membranes",1
+924,916,"Polyisobutylene (PIB) Single Layer Roof Membranes",1
+925,916,"Polyvinyl chloride (PVC) Single Layer Roof Membranes",1
+926,916,"Thermoplastic Alloy (TPA) Single Layer Roof Membranes",1
+927,916,"Thermoplastic Single Layer Roof Membranes",1
+928,915,"Multi Layer Roof Membranes",1
+929,928,"Asphalt Multi Layer Roof Membranes",1
+930,928,"Built Up Bituminous Multi Layer Roof Membranes",1
+931,928,"Coal Tar Multi Layer Roof Membranes",1
+932,928,"Cold Applied Bituminous Multi Layer Roof Membranes",1
+933,928,"Cold Applied Mastic Multi Layer Roof Membranes",1
+934,928,"Glass Fiber Reinforced Asphalt Emulsion Multi Layer Roof Membranes",1
+935,928,"Modified Bituminous Multi Layer Roof Membranes",1
+936,915,"Fluid Applied Roofing",1
+937,915,"Coated Foam Roofing",1
+938,915,"Roll Roofing",1
+939,861,"Roof Decking",1
+940,939,"Cementitious Deck Roofing",1
+941,940,"Cementitious Composite Insulation Deck Roofing",1
+942,940,"Cementitious Lightweight Cellular Deck Roofing",1
+943,940,"Cementitious Lightweight Insulating Deck Roofing",1
+944,939,"Lightweight Concrete Roofing Insulation",1
+945,944,"Composite Concrete and Insulation Deck Roofing",1
+946,944,"Lightweight Cellular Concrete Deck Roofing",1
+947,944,"Lightweight Insulating Concrete Deck Roofing",1
+948,939,"Concrete Deck Roofing",1
+949,948,"Concrete Composite Insulation Deck Roofing",1
+950,948,"Concrete Lightweight Cellular Deck Roofing",1
+951,948,"Concrete Lightweight Insulating Deck Roofing",1
+952,939,"Concrete Roof Topping",1
+953,861,"Roof Finishing Coatings",1
+954,861,"Renovation Products for Roof Coverings and Claddings",1
+955,243,"Roof Specialties and Accessories",1
+956,955,"Roof Edgings and Trims",1
+957,956,"Roof Copings",1
+958,956,"Roof Counterflashing Systems",1
+959,956,"Roof Gravel Stops",1
+960,956,"Roof Fascias",1
+961,956,"Roof Reglets",1
+962,956,"Roof Scuppers",1
+963,955,"Roof Flashings",1
+964,963,"Laminated Sheet Flexible Roof Flashings",1
+965,963,"Modified Bituminous Sheet Flexible Roof Flashings",1
+966,963,"Plastic Sheet Flexible Roof Flashings",1
+967,963,"Rubber Sheet Flexible Roof Flashings",1
+968,963,"Self Adhering Sheet Flexible Roof Flashings",1
+969,963,"Roof Vent Flashings",1
+970,963,"Roof Flashing Drip Caps",1
+971,963,"Roof Penetration Flashings",1
+972,955,"Roof Expansion Joints",1
+973,955,"Roof Vents",1
+974,973,"Roof Relief Vents",1
+975,973,"Roof Ridge Vents",1
+976,973,"Roof Smoke Vents",1
+977,973,"Gravity Roof Vents",1
+978,973,"Automatic Roof Vents",1
+979,973,"Fire Vents",1
+980,955,"Roof Walkways",1
+981,980,"Roof Pavers",1
+982,981,"Precast Concrete Roof Pavers",1
+983,981,"Pedestals Roof Pavers",1
+984,980,"Roof Treads",1
+985,984,"Rubber Roof Treads",1
+986,955,"Roof Snow Guards",1
+987,955,"Roof Piping Portals",1
+988,955,"Roof Domes",1
+989,955,"Roof Turrets",1
+990,955,"Roof Lanterns",1
+991,955,"Roof Curb",1
+992,991,"Structural Roof Curb",1
+993,991,"Acoustical Roof Curb",1
+994,991,"Manufactured Roof Curbs",1
+995,955,"Roof Gutters",1
+996,955,"Roof Soffits",1
+997,955,"Roof Splash Blocks",1
+998,955,"Roof Drains",1
+999,998,"Roof Downspouts",1
+1000,998,"Roof Drains With Strainer",1
