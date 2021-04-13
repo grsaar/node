@@ -242,7 +242,7 @@ id,parentId,name,classificationId
 241,240,"Sports Field Surfacing",1
 242,240,"Playground Surfaces",1
 243,,"Structural and Exterior Enclosure Products",1
-244,243,"Loose Granular Fills", Aggregates
+244,243,"Loose Granular Fills, Aggregates",1 
 245,244,"Powder Fillers",1
 246,245,"Mineral Powder Fillers",1
 247,245,"Metal Powder Fillers",1
@@ -344,7 +344,7 @@ id,parentId,name,classificationId
 343,340,"Metal Lath",1
 344,340,"Veneer Plaster Base Lath",1
 345,340,"Wood Lath",1
-346,243,"Sheets", Boards
+346,243,"Sheets, Boards",1 
 347,346,"Thin Flexible Sheets",1
 348,347,"Thin Sheets",1
 349,348,"Thin Metal Sheets",1
@@ -354,7 +354,7 @@ id,parentId,name,classificationId
 353,348,"Thin Rubber Sheets",1
 354,347,"Textiles",1
 355,347,"Mesh for General Use",1
-356,346,"Rigid Sheets", Slabs
+356,346,"Rigid Sheets, Slabs",1
 357,356,"Solid Sheets",1
 358,357,"Solid Stone Sheets",1
 359,357,"Solid Cementitious Sheets",1
@@ -433,7 +433,7 @@ id,parentId,name,classificationId
 432,431,"Masonry Control Joints",1
 433,431,"Masonry Expansion Joints",1
 434,424,"Airbricks",1
-435,243,"Mechanical Fasteners", Adhesives
+435,243,"Mechanical Fasteners, Adhesives",1
 436,435,"Mechanical Fasteners",1
 437,436,"Cast In Anchorages",1
 438,437,"Rail Anchors",1
@@ -472,7 +472,7 @@ id,parentId,name,classificationId
 471,469,"Synthetic Adhesives",1
 472,469,"Sound Proofing Adhesive",1
 473,435,"General Purpose Tape",1
-474,435,"Joint Fillers", Sealants
+474,435,"Joint Fillers, Sealants",1
 475,474,"Joint Fillers",1
 476,475,"Backer Rods",1
 477,474,"Putties",1
@@ -485,7 +485,7 @@ id,parentId,name,classificationId
 484,474,"Preformed Joint Seals",1
 485,484,"Compression Seals",1
 486,484,"Joint Gaskets",1
-487,435,"Ropes", Wires
+487,435,"Ropes, Wires",1
 488,487,"Ropes",1
 489,487,"Wires",1
 490,487,"Cables",1
@@ -683,7 +683,7 @@ id,parentId,name,classificationId
 682,675,"Precast Concrete Facade",1
 683,682,"Cladding and Curtainwall Panels",1
 684,683,"Opening Infill Units",1
-685,683,"Imbedded Material Finish Mix", Tiles
+685,683,"Imbedded Material Finish Mix, Tiles",1
 686,675,"Entrances",1
 687,686,"Aluminum-Framed Entrances",1
 688,687,"Automatic Aluminum-Framed Entrances",1
@@ -784,7 +784,7 @@ id,parentId,name,classificationId
 783,781,"Couplers",1
 784,781,"Complete Space Frames",1
 785,766,"Geodesic Structures",1
-786,766,"Rafters", Beams
+786,766,"Rafters, Beams",1
 787,786,"Trussed Rafters",1
 788,786,"Trussed Beams and Joists",1
 789,788,"Trussed Metal Joists",1
@@ -834,7 +834,7 @@ id,parentId,name,classificationId
 833,766,"Structural Profiled Roofs",1
 834,833,"Prefabricated Shell Roofs",1
 835,833,"Simulated Stones",1
-836,243,"Multi-Function Exterior Coverings", Claddings
+836,243,"Multi-Function Exterior Coverings, Claddings",1
 837,836,"Multi-Function Exterior Claddings",1
 838,836,"Exterior Wall Cladding",1
 839,836,"Exterior Siding",1
@@ -851,15 +851,15 @@ id,parentId,name,classificationId
 850,849,"Supports for Coverings and Claddings",1
 851,849,"Mechanical Fasteners for Coverings and Claddings",1
 852,849,"Movement and Dividing Joints for Coverings and Claddings",1
-853,849,"Joint Coverings", Flashings
+853,849,"Joint Coverings, Flashings",1
 854,849,"Reinforcements for Coverings and Claddings",1
-855,849,"Trims", Edgings
+855,849,"Trims, Edgings",1
 856,849,"Spacers",1
 857,849,"Profile Fillers",1
-858,849,"Underlays", Linings
+858,849,"Underlays, Linings",1
 859,849,"Beddings Adhesives for Coverings and Claddings",1
 860,849,"Sealants for Coverings and Claddings",1
-861,243,"Roof Coverings", Claddings
+861,243,"Roof Coverings, Claddings",1
 862,861,"Exterior Roof Panels",1
 863,862,"Exterior Metal Roof Panels",1
 864,862,"Exterior Plastic Roof Panels",1

@@ -1,9 +1,9 @@
 //const db = require('./index.js');
 
 module.exports = {
-    addCountries: `INSERT INTO "Country"("Name") VALUES($1)`,
-    addClassifications: `INSERT INTO "Classification"("Name") VALUES($1)`,
-    addClassificationItems: `INSERT INTO "Classification Item"("Id","ParentId","Name","ClassificationId") VALUES($1,$2,$3,$4)`,
-    addTypes: `INSERT INTO "Type"("Name") VALUES($1)`,
-    addStatus: `INSERT INTO "Status"("Name") VALUES($1)`
+    addCountries: `INSERT INTO "Country"("InternalId","Name") VALUES($1,$2)`,
+    addClassifications: `INSERT INTO "Classification"("InternalId","Name") VALUES($1,$2)`,
+    addClassificationItems: `INSERT INTO "Classification Item"("InternalId","Name","ClassificationId","ParentId") VALUES($1,$2,$3,$4)`,
+    addTypes: `INSERT INTO "Type"("InternalId","Name") VALUES($1,$2)`,
+    addStatus: `INSERT INTO "Status"("InternalId","Name") VALUES($1,$2)`    
     }
