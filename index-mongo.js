@@ -3,7 +3,8 @@ const hostName = '127.0.0.1';
 const mongoose = require('mongoose');
 const { response } = require('express');
 const Schema = mongoose.Schema;
-const {importDataToMongoFromCsv} = require('./importData')
+const {importDataToMongoFromCsv} = require('./import/importData');
+const {updateHierarchyCodesMongo} = require('./import/classificationItemHierarchyCode');
 
  async function connectDatabase() {
   return new Promise ((resolve, reject) => {
@@ -20,7 +21,8 @@ const {importDataToMongoFromCsv} = require('./importData')
 
 (async function () {
   const db = await connectDatabase();
-  await importDataToMongoFromCsv(db)
+  //await importDataToMongoFromCsv(db)
+  await updateHierarchyCodesMongo(db)
   .catch(console.log);
 })();
 /*

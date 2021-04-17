@@ -1,4 +1,4 @@
-const insertData = require('./insertData');
+const insertQueries = require('./insertQueries');
 const fs = require('fs');
 const fastcsv = require('fast-csv');
 
@@ -95,7 +95,7 @@ const csvStream = fastcsv.parse({ headers: true })
     });*/
 
 async function importDataToMongoFromCsv(db) {
-  const aCountries = await readCsv('import/countries.csv')
+  const aCountries = await readCsv('import/data/countries.csv')
   const aMappedCountries = aCountries.map(oCountry => ({
     internalId: +oCountry.id,
     name: oCountry.name
@@ -104,7 +104,7 @@ async function importDataToMongoFromCsv(db) {
   await db.collection("Country")
     .insertMany(aMappedCountries);
 
-  const aClassifications = await readCsv('import/classifications.csv')
+  const aClassifications = await readCsv('import/data/classifications.csv')
   const aMappedClassifications = aClassifications.map(oClassification => ({
     internalId: +oClassification.id,
     name: oClassification.name
@@ -113,7 +113,7 @@ async function importDataToMongoFromCsv(db) {
   await db.collection("Classification")
     .insertMany(aMappedClassifications);
 
-  const aClassificationItems = await readCsv('import/classificationItems.csv')
+  const aClassificationItems = await readCsv('import/data/classificationItems.csv')
   const aMappedClassificationItems = aClassificationItems.map(oClassificationItem => ({
     internalId: +oClassificationItem.id,
     name: oClassificationItem.name,
@@ -125,7 +125,7 @@ async function importDataToMongoFromCsv(db) {
   await db.collection("ClassificationItem")
     .insertMany(aMappedClassificationItems);
 
-  const aTypes = await readCsv('import/types.csv')
+  const aTypes = await readCsv('import/data/types.csv')
   const aMappedTypes = aTypes.map(oType => ({
     internalId: +oType.id,
     name: oType.name
@@ -134,7 +134,7 @@ async function importDataToMongoFromCsv(db) {
   await db.collection("Type")
     .insertMany(aMappedTypes);
 
-  const aStatuses = await readCsv('import/status.csv')
+  const aStatuses = await readCsv('import/data/status.csv')
   const aMappedStatuses = aStatuses.map(oStatus => ({
     internalId: +oStatus.id,
     name: oStatus.name
@@ -146,29 +146,29 @@ async function importDataToMongoFromCsv(db) {
 }
 
 async function importDataToPostgresFromCsv(db) {
-  const aCountries = await readCsv('import/countries.csv')
+ /* const aCountries = await readCsv('import/data/countries.csv')
   const aMappedCountries = aCountries.map(oCountry => ([
     +oCountry.id,
     oCountry.name
   ]));
 
   await aMappedCountries.forEach(row => {
-    db.query(insertData.addStatus, row)
+    db.query(insertQueries.addCountries, row)
     .catch(console.log);
   });
 
-  const aClassifications = await readCsv('import/classifications.csv')
+  const aClassifications = await readCsv('import/data/classifications.csv')
   const aMappedClassifications = aClassifications.map(oClassification => ([
     +oClassification.id,
     oClassification.name
   ]));
 
   await aMappedClassifications.forEach(row => {
-    db.query(insertData.addClassifications, row)
+    db.query(insertQueries.addClassifications, row)
     .catch(console.log);
   });
 
-  const aClassificationItems = await readCsv('import/classificationItems.csv')
+  const aClassificationItems = await readCsv('import/data/classificationItems.csv')
   const aMappedClassificationItems = aClassificationItems.map(oClassificationItem => ([
    +oClassificationItem.id,
     oClassificationItem.name,
@@ -177,31 +177,31 @@ async function importDataToPostgresFromCsv(db) {
   ]));
 
   await aMappedClassificationItems.forEach(row => {
-    db.query(insertData.addClassificationItems, row)
+    db.query(insertQueries.addClassificationItems, row)
     .catch(console.log);
   });
 
-  const aTypes = await readCsv('import/types.csv')
+  const aTypes = await readCsv('import/data/types.csv')
   const aMappedTypes = aTypes.map(oType => ([
     +oType.id,
     oType.name
   ]));
 
   await aMappedTypes.forEach(row => {
-    db.query(insertData.addTypes, row)
+    db.query(insertQueries.addTypes, row)
     .catch(console.log);
-  });
+  }); */
 
-  const aStatuses = await readCsv('import/status.csv')
+  const aStatuses = await readCsv('import/data/status.csv')
   const aMappedStatuses = aStatuses.map(oStatus => ([
     +oStatus.id,
     oStatus.name
   ]));
 
   await aMappedStatuses.forEach(row => {
-    db.query(insertData.addStatus, row)
+    db.query(insertQueries.addStatus, row)
     .catch(console.log);
-  });
+  }); 
 
 }
 
