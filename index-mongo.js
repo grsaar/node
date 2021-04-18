@@ -5,6 +5,8 @@ const { response } = require('express');
 const Schema = mongoose.Schema;
 const {importDataToMongoFromCsv} = require('./import/importData');
 const {updateHierarchyCodesMongo} = require('./import/classificationItemHierarchyCode');
+const {addRetailers, addProducts} = require('./mongoRelational/index');
+const defineModels = require('./mongoRelational/schemas');
 
  async function connectDatabase() {
   return new Promise ((resolve, reject) => {
@@ -21,9 +23,12 @@ const {updateHierarchyCodesMongo} = require('./import/classificationItemHierarch
 
 (async function () {
   const db = await connectDatabase();
+  defineModels(db);
   //await importDataToMongoFromCsv(db)
-  await updateHierarchyCodesMongo(db)
-  .catch(console.log);
+  //await updateHierarchyCodesMongo(db)
+  //await addRetailers(db)
+  //await addProducts(db)
+ // .catch(console.log);
 })();
 /*
 db.collection("Status")
