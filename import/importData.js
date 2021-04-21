@@ -146,7 +146,7 @@ async function importDataToMongoFromCsv(db) {
 }
 
 async function importDataToPostgresFromCsv(db) {
- /* const aCountries = await readCsv('import/data/countries.csv')
+  const aCountries = await readCsv('import/data/countries.csv')
   const aMappedCountries = aCountries.map(oCountry => ([
     +oCountry.id,
     oCountry.name
@@ -190,7 +190,7 @@ async function importDataToPostgresFromCsv(db) {
   await aMappedTypes.forEach(row => {
     db.query(insertQueries.addTypes, row)
     .catch(console.log);
-  }); */
+  }); 
 
   const aStatuses = await readCsv('import/data/status.csv')
   const aMappedStatuses = aStatuses.map(oStatus => ([

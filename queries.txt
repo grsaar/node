@@ -1,0 +1,13 @@
+1. Select random country
+    1.1 get retailers
+        1.1.1 get products
+2. Select random classification item
+    2.1 get all its children
+        2.1.1 get products using hierarchy code
+        2.1.2 get products using ids??
+3. Update product classification item
+4. Add products with no classification item
+5. Get unclassified products
+6. Get products with no thumbnails??
+    6.1 Add thumbnails
+7. Delete stuff
