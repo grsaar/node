@@ -27,7 +27,7 @@ async function connectDatabase() {
   const db = await connectDatabase();
   //await importDataToPostgresFromCsv(db)
   //await updateHierarchyCodesPg(db)
-  //await addRetailers(db)
- await addProducts(db)
+  // addRetailers(db)
+  addProducts(db)
   .catch(console.log);
 })();

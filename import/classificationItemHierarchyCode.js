@@ -13,13 +13,12 @@ async function updateHierarchyCodesPg (db) {
       }); 
 }
 
-async function updateHierarchyCodesMongo (db) {
+async function updateHierarchyCodesMongo (db, oModels) {
     //for some reason, still selects all fields
-   const aClassificationItems = await db.collection("ClassificationItem").find({}, {internalId:1, parentId:1, hierarchyCode:1, _id:0 }).toArray();
+   const aClassificationItems = await oModels.ClassificationItem.find({}, {internalId:1, parentId:1, hierarchyCode:1, _id:0 });
    const aItemsToUpdate = addHierarchyCodes(aClassificationItems, 'internalId', 'parentId', 'hierarchyCode');
-
- await aItemsToUpdate.forEach(row => {
-     db.collection("ClassificationItem").updateOne({internalId: row[1]}, {$set: {hierarchyCode: row[0]}});        
+   await aItemsToUpdate.forEach(row => {
+    oModels.ClassificationItem.updateOne({internalId: row[1]}, {$set: {hierarchyCode: row[0]}}).catch(console.log);        
       }); 
 }
 

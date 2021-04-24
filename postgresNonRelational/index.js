@@ -20,11 +20,10 @@ function prepareProductData (aStatuses, aCountries, aTypes, aClassificationItems
     const oClassification = aClassifications.find(oClassification => oClassification.internalId === oClassificationItem.classificationId);
     oClassificationItem.classification = oClassification;
     const sThumbnailName = getRandomString(getRandomInteger(1,51));
-    const sThumbnailData = getRandomString(getRandomInteger(999,1001));
-    const sEncodedData = Buffer.from(sThumbnailData, 'base64');
+    const sThumbnailData = getRandomString(getRandomInteger(1000,10000));
     const oThumbnail = {
         name: sThumbnailName,
-        data: sEncodedData
+        data: sThumbnailData
     };
     const oCountry = aCountries[Math.floor(Math.random() * aCountries.length)];
     const oRetailer = {
@@ -37,7 +36,7 @@ function prepareProductData (aStatuses, aCountries, aTypes, aClassificationItems
     const aProduct = [{
         name: getRandomString(getRandomInteger(1,51)),
         description: getRandomString(getRandomInteger(1,51)),
-        statusId: oStatus,
+        status: oStatus,
         dateAdded: sDateAdded,        
         retailer: oRetailer,
         type: oType,

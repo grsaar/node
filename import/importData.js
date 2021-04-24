@@ -94,15 +94,15 @@ const csvStream = fastcsv.parse({ headers: true })
        // console.log(statuses);
     });*/
 
-async function importDataToMongoFromCsv(db) {
+async function importDataToMongoFromCsv(oModels) {
   const aCountries = await readCsv('import/data/countries.csv')
   const aMappedCountries = aCountries.map(oCountry => ({
     internalId: +oCountry.id,
     name: oCountry.name
   }));
 
-  await db.collection("Country")
-    .insertMany(aMappedCountries);
+  await oModels.Country
+    .insertMany(aMappedCountries).catch(console.log);
 
   const aClassifications = await readCsv('import/data/classifications.csv')
   const aMappedClassifications = aClassifications.map(oClassification => ({
@@ -110,19 +110,21 @@ async function importDataToMongoFromCsv(db) {
     name: oClassification.name
   }));
 
-  await db.collection("Classification")
-    .insertMany(aMappedClassifications);
+  
+  const aClassificationResult = await oModels.Classification
+    .insertMany(aMappedClassifications, {ordered: true});
+    console.log(aClassificationResult);
 
   const aClassificationItems = await readCsv('import/data/classificationItems.csv')
   const aMappedClassificationItems = aClassificationItems.map(oClassificationItem => ({
     internalId: +oClassificationItem.id,
     name: oClassificationItem.name,
     hierarchyCode: null,
-    classificationId: +oClassificationItem.classificationId,
+    _classificationId: aClassificationResult.find(oClassification => oClassification.internalId === +oClassificationItem.classificationId)._id,
     parentId: oClassificationItem.parentId ? +oClassificationItem.parentId : null
   }));
 
-  await db.collection("ClassificationItem")
+  await oModels.ClassificationItem
     .insertMany(aMappedClassificationItems);
 
   const aTypes = await readCsv('import/data/types.csv')
@@ -131,7 +133,7 @@ async function importDataToMongoFromCsv(db) {
     name: oType.name
   }));
 
-  await db.collection("Type")
+  await oModels.Type
     .insertMany(aMappedTypes);
 
   const aStatuses = await readCsv('import/data/status.csv')
@@ -140,8 +142,8 @@ async function importDataToMongoFromCsv(db) {
     name: oStatus.name
   }));
 
-  await db.collection("Status")
-    .insertMany(aMappedStatuses);
+  await oModels.Status
+    .insertMany(aMappedStatuses); 
 
 }
 

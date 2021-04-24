@@ -1,27 +1,30 @@
 const {getRandomString, getRandomInteger} = require('../utils');
 
-async function addRetailers (db){
-    const aCountries =  await db.collection("Country").find({}, {_id:1}).toArray().catch(console.log);
-    const aCountryIds = aCountries.map(oCountry => oCountry._id);
-    console.log(aCountryIds);
+async function addRetailers (db, oModels){
+    const aCountries =  await oModels.Country.find({}, {_id:1}).catch(console.log);
+    console.log(aCountries);
+    //while
+    /* async function delay(iMillis) {
+	return new Promise(resolve => setTimeout(resolve, iMillis));
+}*/
     for (let i=0; i< 5; i++){
-        await insertRetailer(db, aCountryIds);
+        await insertRetailer(db, aCountries, oModels);
     }   
 }
 
-async function insertRetailer (db, aCountryIds){
+async function insertRetailer (db, aCountries, oModels){
     const sName = getRandomString(getRandomInteger(1,51));
     const sTaxId = getRandomString(2).toUpperCase() + getRandomInteger(1000000000,10000000000).toString();
     const sEmail = getRandomString(getRandomInteger(1,11)) + '@' + getRandomString(getRandomInteger(1,10)) + '.com';  
-    const iCountryId = aCountryIds[Math.floor(Math.random() * aCountryIds.length)];
+    const iCountryId = aCountries[Math.floor(Math.random() * aCountries.length)]._id;
     const oRetailerData = {
         name: sName, 
         taxId: sTaxId,
         email: sEmail,
-        _counrtyId: iCountryId
+        _countryId: iCountryId
     };
     console.log(oRetailerData); 
-    await db.collection("Retailer").insertOne(oRetailerData).catch(console.log);
+    await oModels.Retailer.create(oRetailerData).catch(console.log);
 }
 
 /*async function addThumbnails (db){
@@ -30,38 +33,33 @@ async function insertRetailer (db, aCountryIds){
     }    
 }*/
 
-async function insertThumbnail (db){
+async function insertThumbnail (oModels){
     const sName = getRandomString(getRandomInteger(1,51));
     const sData = getRandomString(getRandomInteger(999,1001));
-    //gives utf8 error
-    const sEncodedData = Buffer.from(sData, 'base64');
     const oThumbnailData = {
         name: sName,
         data: sData
     };
     return new Promise ((resolve, reject) => {
-        db.collection("Thumbnail").insertOne(oThumbnailData, (err, res) => {
+        oModels.Thumbnail.create(oThumbnailData, (err, res) => {
             if(err){
                 reject(err);
             } else {
-                resolve(res.ops[0]);
+                resolve(res);
             }
          });
     });
 }
 
-async function addProducts (db){
-    const aStatuses =  await db.collection("Status").find({}, {_id:1}).toArray().catch(console.log);
-    const aStatusIds = aStatuses.map(oStatus => oStatus._id);
-    const aRetailers =  await db.collection("Retailer").find({}, {_id:1}).toArray().catch(console.log);
-    const aRetailerId = aRetailers.map(oRetailer => oRetailer._id);
-    const aTypes =  await db.collection("Type").find({}, {_id:1}).toArray().catch(console.log);
-    const aTypeIds = aTypes.map(oType => oType._id);
+async function addProducts (db, oModels){
+    const aStatuses =  await oModels.Status.find({}, {_id:1}).catch(console.log);
+    const aRetailers =  await oModels.Retailer.find({}, {_id:1}).catch(console.log);
+    const aTypes =  await oModels.Type.find({}, {_id:1}).catch(console.log);
     
-   const oProduct = await insertProduct(db, aStatusIds, aRetailerId, aTypeIds);
+   const oProduct = await insertProduct(oModels, aStatuses, aRetailers, aTypes);
       console.log(oProduct);
-   await insertProductClassificationItem(db, oProduct);
-   const oThumbnail = await insertThumbnail(db);
+   await insertProductClassificationItem(oModels, oProduct);
+   const oThumbnail = await insertThumbnail(oModels);
    console.log(oThumbnail);
    const oUpdateData = {
        _thumbnailId: oThumbnail._id,
@@ -70,16 +68,16 @@ async function addProducts (db){
    const oConditionData = {
        _id : oProduct._id
     };
-   await update(db, "Product", oUpdateData, oConditionData); 
+   await update(oModels, "Product", oUpdateData, oConditionData); 
 }
 
-async function insertProduct (db, aStatusIds, aRetailerId, aTypeIds){
+async function insertProduct (oModels, aStatuses, aRetailers, aTypes){
     const sName = getRandomString(getRandomInteger(1,51));
     const sDesctiption = getRandomString(getRandomInteger(1,51));
-    const iStatusId =   aStatusIds[Math.floor(Math.random() * aStatusIds.length)];
+    const iStatusId =   aStatuses[Math.floor(Math.random() * aStatuses.length)]._id;
     const sDateAdded =  new Date(); 
-    const iRetailerId = aRetailerId[Math.floor(Math.random() * aRetailerId.length)];
-    const iTypeId = aTypeIds[Math.floor(Math.random() * aTypeIds.length)];
+    const iRetailerId = aRetailers[Math.floor(Math.random() * aRetailers.length)]._id;
+    const iTypeId = aTypes[Math.floor(Math.random() * aTypes.length)]._id;
     const oProduct = {
         name: sName,
         description: sDesctiption,
@@ -88,35 +86,32 @@ async function insertProduct (db, aStatusIds, aRetailerId, aTypeIds){
         _retailerId: iRetailerId,
         _typeId: iTypeId
     };
-    console.log(oProduct); 
    return new Promise ((resolve, reject) => {
-    db.collection("Product").insertOne(oProduct, (err, res) => {
+    oModels.Product.create(oProduct, (err, res) => {
             if(err){
                 reject(err);
             } else {
-                resolve(res.ops[0]);
+                resolve(res);
             }
         });
     });
 }
 
-async function insertProductClassificationItem(db, oProduct){
-    const aClassificationItems =  await db.collection("ClassificationItem").find({}, {_id:1}).toArray().catch(console.log);
-    const aClasItemIds = aClassificationItems.map(oClasItem => oClasItem._id);
-    const iClassificationItemId = aClasItemIds[Math.floor(Math.random() * aClasItemIds.length)];
+async function insertProductClassificationItem(oModels, oProduct){
+    const aClassificationItems =  await oModels.ClassificationItem.find({}, {_id:1}).catch(console.log);
+    const iClassificationItemId = aClassificationItems[Math.floor(Math.random() * aClassificationItems.length)]._id;
     const oProductClasItemData = {
         _productId: oProduct._id,
         _classificationItemId: iClassificationItemId
     };
-    await db.collection("ProductClassificationItem").insertOne(oProductClasItemData).catch(console.log);
+    await oModels.ProductClassificationItem.create(oProductClasItemData).catch(console.log);
 
 }
 
-async function update(db, sTableToUpdate, oUpdateData, oConditionData){
+async function update(oModels, sTableToUpdate, oUpdateData, oConditionData){
     console.log(oConditionData);
     console.log(oUpdateData);
-
-    db.collection(sTableToUpdate).updateOne(oConditionData, {$set: oUpdateData}).catch(console.log);
+   oModels[sTableToUpdate].updateOne(oConditionData, {$set: oUpdateData}).catch(console.log);
 }
 
 module.exports = {

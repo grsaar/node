@@ -7,7 +7,7 @@ const {importDataToMongoFromCsv} = require('./import/importData');
 const {updateHierarchyCodesMongo} = require('./import/classificationItemHierarchyCode');
 //const {addRetailers, addProducts} = require('./mongoRelational/index');
 const {addProducts} = require('./mongoNonRelational/index');
-const defineModels = require('./mongoRelational/schemas');
+const defineModels = require('./mongoRelational/models');
 
  async function connectDatabase() {
   return new Promise ((resolve, reject) => {
@@ -24,18 +24,10 @@ const defineModels = require('./mongoRelational/schemas');
 
 (async function () {
   const db = await connectDatabase();
-  //defineModels(db);
- // await importDataToMongoFromCsv(db)
- // await updateHierarchyCodesMongo(db)
-  //await addRetailers(db)
-  await addProducts(db)
- // .catch(console.log);
+  const oModels = defineModels(db);
+  //await importDataToMongoFromCsv(oModels);
+  //await updateHierarchyCodesMongo(db, oModels)
+  //await addRetailers(db, oModels)
+  await addProducts(db, oModels)
+  .catch(console.log);
 })();
-/*
-db.collection("Status")
-            .insertMany(statuses, (err, res) => {
-                if (err) throw err;
-                console.log(`Inserted: ${res.insertedCount} rows`);
-            });
-        db.close();
-        */
