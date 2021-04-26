@@ -1,13 +1,119 @@
 1. Select random country
     1.1 get retailers
         1.1.1 get products
+
+        SELECT "Country"."Id" AS "CountryId", "Retailer"."Id" AS "RetailerId", "Product"."Id", "Product"."RetailerId"
+        FROM "Country" LEFT JOIN "Retailer" ON "Country"."Id" = "Retailer"."CountryId"
+        LEFT JOIN "Product" ON "Product"."RetailerId" = "Retailer"."Id"
+        WHERE "Country"."Id" = 19; 
+       // AND "Product"."RetailerId" = "Retailer"."Id";
+
+        db.Country.aggregate([
+            {
+             $match: {$and: [{"name": "Libya"}]}
+         }, {
+             $lookup: {
+                 from: "Retailer",
+                 localField: "_id",
+                 foreignField: "_countryId",
+                 as: "retailers"
+             }
+         },{
+             $unwind : "$retailers"
+        },{
+             $lookup: {
+                 from: "Product",
+                 localField: "retailers._id",
+                 foreignField: "_retailerId",
+                 as: "products"
+             }
+         }, {
+             $project:{
+                 _id: 1,
+                 name: 1,
+                 products: "$products.name"
+            }
+         }
+         ])
+
 2. Select random classification item
-    2.1 get all its children
+    2.1 get all it's children (with hierarchyCode)
+
+        SELECT * FROM "Classification Item"
+        WHERE "Classification Item"."HierarchyCode" LIKE '243,861,%';
+
+        db.ClassificationItem.find({"hierarchyCode": /243,861,/i})
+
+
         2.1.1 get products using hierarchy code
+
+        SELECT "Product".*, "Classification Item"."HierarchyCode", "Classification Item"."Id" FROM "Classification Item" INNER JOIN ("Product Classification Item" 
+        INNER JOIN "Product" on "Product"."Id" = "Product Classification Item"."ProductId") 
+        ON "Product Classification Item"."ClassificationItemId" = "Classification Item"."Id"
+         WHERE "Classification Item"."HierarchyCode" LIKE '243,861,%';
+{}60841ec7b81fb8691cb690f4
+         db.ClassificationItem.aggregate([
+         {
+            $match:{"hierarchyCode": /243,/i}
+        },{
+            $lookup: {
+                from: "ProductClassificationItem",
+                localField: "_id",
+                foreignField: "_classificationItemId",
+                as: "productClassificationItems"
+            }
+        },{
+             $unwind : "$productClassificationItems"
+        },{
+            $lookup: {
+                from: "Product",
+                localField: "productClassificationItems._productId",
+                foreignField: "_id",
+                as: "productClassificationItems.products"
+            }
+        },{
+            $project:{
+                _id: 1,
+                name: 1,
+                products: "$productClassificationItems.products.name"
+            }
+        }
+        ])
+
         2.1.2 get products using ids??
+
+
 3. Update product classification item
+
+UPDATE "Product Classification Item"
+SET "ClassificationItemId" = 10
+WHERE "Product"."Id" = 
+
+
 4. Add products with no classification item
+
+
 5. Get unclassified products
+
+SELECT * FROM "Product"
+LEFT JOIN "Product Classification Item" ON "Product"."Id" = "Product Classification Item"."ProductId"
+WHERE "Product Classification Item"."ProductId" IS NULL; 
+
 6. Get products with no thumbnails??
+
+SELECT * FROM "Product" 
+WHERE "Product"."ThumbnailId" IS NULL;
+
     6.1 Add thumbnails
-7. Delete stuff
+
+    INSERT INTO "Thumbnail"("Name", "Data") VALUES($1,$2) returning "Id";
+
+        6.1.2 Update product ThumbnailId 
+
+7. Delete retailers with no products
+
+DELETE FROM "Retailer"
+WHERE "Id" IN(
+SELECT "Retailer"."Id" FROM "Retailer"
+LEFT JOIN "Product" ON "Retailer"."Id" = "Product"."RetailerId"
+WHERE "Product"."RetailerId" IS NULL);
