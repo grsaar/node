@@ -2,7 +2,7 @@
     1.1 get retailers
         1.1.1 get products
 
-        //RELATIONAL
+        //PG RELATIONAL
 
         SELECT "Country"."Id" AS "CountryId", "Retailer"."Id" AS "RetailerId", "Product"."Id", "Product"."RetailerId"
         FROM "Country" LEFT JOIN "Retailer" ON "Country"."Id" = "Retailer"."CountryId"
@@ -40,21 +40,39 @@
          }
          ])
 
+         //PG DOCUMENTS
+
+        SELECT * FROM "Product" 
+        WHERE  "Data" -> 'Name' = "ksHownzhCxbI";
+
+        //MONGO DOCUMENTS
+
+        db.Product.find({"retailer.counrty.name": "Denmark"})
+
+
+
 2. Select random classification item
     2.1 get all it's children (with hierarchyCode)
+
+        //PG RELATIONAL
 
         SELECT * FROM "Classification Item"
         WHERE "Classification Item"."HierarchyCode" LIKE '243,861,%';
 
+        //MONGO RELATIONAL
         db.ClassificationItem.find({"hierarchyCode": /243,861,/i})
 
 
         2.1.1 get products using hierarchy code
-                                                                                                                        
+
+        //PG RELATIONAL
+
         SELECT "Product".*, "Classification Item"."HierarchyCode", "Classification Item"."Id" FROM "Classification Item" INNER JOIN ("Product Classification Item" 
         INNER JOIN "Product" on "Product"."Id" = "Product Classification Item"."ProductId") 
         ON "Product Classification Item"."ClassificationItemId" = "Classification Item"."Id"
          WHERE "Classification Item"."HierarchyCode" LIKE '243,861,%';
+
+        //MONGO RELATIONAL
 
     // Tulemuseks array classificationItemitest, milles omakorda on array toodetest
          db.ClassificationItem.aggregate([
@@ -88,6 +106,13 @@
             }
         }
         ])
+
+        //PG DOCUMENTS
+
+        //MONGO DOCUMENTS
+
+        db.Product.find({"classificationItems.hierarchyCode": /1,/i}, {"classificationItems":1}) //no
+         db.Product.find({"classificationItems": {$elemMatch: {"hierarchyCode": /1,/i}}}, {"classificationItems":1}) //no
 
 
         2.1.2 get products using ids??
