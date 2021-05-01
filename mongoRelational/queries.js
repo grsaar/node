@@ -267,7 +267,7 @@ async function deleteRandomProduct (oModels){
     const aProducts = await oModels.Product.aggregate([{ $sample: { size: 1 } }]).catch(console.log);
     const oProductId = new ObjectId(aProducts[0]._id);
     await oModels.Product.deleteOne({ _id: { $eq: oProductId }});
-    /7const deletedPrCheck = await oModels.Product.find({_id: oProductId});
+    //const deletedPrCheck = await oModels.Product.find({_id: oProductId});
     //console.log(deletedPrCheck);
 }
 

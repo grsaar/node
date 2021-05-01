@@ -145,7 +145,7 @@ async function getUnclassifiedProducts (db){
 
 async function getProductsWithNoThumbnails (db){
     const oProductsMissingThumbnailsResult = await db.query(`SELECT * FROM "Product" 
-                                                         WHERE "Product"."ThumbnailId" IS NULL;`)
+                                                         WHERE "Product"."ThumbnailId" IS NULL`)
                                                          .catch(console.log);
     if(oProductsMissingThumbnailsResult.rows.length){
         oProductsMissingThumbnailsResult.rows.forEach(async function (oProduct){
@@ -166,7 +166,7 @@ async function deleteRetailersWithNoProducts (db){
 }
 
 async function deleteRandomProduct (db){
-    const oProduct = await db.query(`SELECT * FROM "Classification Item" ORDER BY random() LIMIT 1`);
+    const oProduct = await db.query(`SELECT * FROM "Product" ORDER BY random() LIMIT 1`);
     await db.query(`DELETE FROM "Product"
                     WHERE "Id" = ${oProduct.rows[0].Id}`)
                     .catch(console.log);

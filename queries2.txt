@@ -42,8 +42,8 @@
 
          //PG DOCUMENTS
 
-        SELECT "Data" -> 'name' AS "ProductName" FROM "Product"
-        WHERE "Data" -> 'retailer' -> 'country' ->> 'Name' = 'Vietnam';
+        SELECT * FROM "Product"
+        WHERE ("Data" -> 'retailer' -> 'country' ->> 'InternalId') = 194;
 
         //MONGO DOCUMENTS
 
@@ -114,8 +114,7 @@
 
         //MONGO DOCUMENTS
 
-        db.Product.find({"classificationItems.hierarchyCode": /1,/i}, {"classificationItems":1}) //no
-         db.Product.find({"classificationItems": {$elemMatch: {"hierarchyCode": /1,/i}}}, {"classificationItems":1}) //no
+         db.Product.find({"classificationItems.hierarchyCode": /243,/i})
 
 
         2.1.2 get products using ids??
@@ -183,6 +182,8 @@ db.Product.aggregate([{
 SELECT * FROM "Product"
 WHERE   "Product"."Data"->'classificationItems' is null;
 
+//MONGO DOCUMENTS
+db.Product.find( {"classificationItems": null } )
 
 6. Get products with no thumbnails??
 
@@ -246,7 +247,7 @@ db.Retailer.aggregate([{
 
 db.Retailer.remove( { _id: { $eq: ... } } )
 
-8. Delete thumbnail from randomly selected products 
+8. Delete thumbnail from randomly selected products //no
  
  //PG RELATIONAL
 
