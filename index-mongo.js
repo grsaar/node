@@ -5,8 +5,8 @@ const { response } = require('express');
 const Schema = mongoose.Schema;
 const {importDataToMongoFromCsv} = require('./import/importData');
 const {updateHierarchyCodesMongo} = require('./import/classificationItemHierarchyCode');
-//const {addRetailers, addProducts} = require('./mongoRelational/index');
-const {addProducts} = require('./mongoNonRelational/index');
+const {executeQueries} = require('./mongoRelational/index');
+//const {addProducts} = require('./mongoNonRelational/index');
 const defineModels = require('./mongoRelational/models');
 
  async function connectDatabase() {
@@ -27,7 +27,6 @@ const defineModels = require('./mongoRelational/models');
   const oModels = defineModels(db);
   //await importDataToMongoFromCsv(oModels);
   //await updateHierarchyCodesMongo(db, oModels)
-  //await addRetailers(db, oModels)
-  await addProducts(db, oModels)
+  await executeQueries(oModels)
   .catch(console.log);
 })();

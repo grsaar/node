@@ -43,7 +43,7 @@ function prepareProductData(aStatuses, aCountries, aTypes, aClassificationItems,
         name: getRandomString(getRandomInteger(1,51)), 
         taxId: getRandomString(2).toUpperCase() + getRandomInteger(1000000000,10000000000).toString(),
         email: getRandomString(getRandomInteger(1,11)) + '@' + getRandomString(getRandomInteger(1,10)) + '.com',
-        counrty: oCountry
+        country: oCountry
     }
 
     const oProduct = {

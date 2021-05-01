@@ -42,12 +42,12 @@
 
          //PG DOCUMENTS
 
-        SELECT * FROM "Product" 
-        WHERE  "Data" -> 'Name' = "ksHownzhCxbI";
+        SELECT "Data" -> 'name' AS "ProductName" FROM "Product"
+        WHERE "Data" -> 'retailer' -> 'country' ->> 'Name' = 'Vietnam';
 
         //MONGO DOCUMENTS
 
-        db.Product.find({"retailer.counrty.name": "Denmark"})
+        db.Product.find({"retailer.country.name": "Denmark"})
 
 
 
@@ -61,7 +61,7 @@
 
         //MONGO RELATIONAL
         db.ClassificationItem.find({"hierarchyCode": /243,861,/i})
-
+               
 
         2.1.1 get products using hierarchy code
 
@@ -109,6 +109,9 @@
 
         //PG DOCUMENTS
 
+         SELECT * FROM "Product", jsonb_to_recordset(Product.Data.classificationItems) AS clItems(HierarchyCode)
+        WHERE  clItems.HierarchyCode LIKE '243,%'; //no
+
         //MONGO DOCUMENTS
 
         db.Product.find({"classificationItems.hierarchyCode": /1,/i}, {"classificationItems":1}) //no
@@ -120,21 +123,36 @@
 
 3. Update product classification item
 
-UPDATE "Product Classification Item"
+//PG RELATIONAL
+
+UPDATE "Product Classification Item" //redo
 SET "ClassificationItemId" = 10
 WHERE "Product"."Id" = 
 
+//MONGO RELATIONAL
+
 db.ProductClassificationItem.update({"_productId" : ..., {$set:{"_classificationItemId" : ...}}})
+
+//PG DOCUMENTS
+
+UPDATE "Product"
+SET "Data" = jsonb_set("Data", 'classificationItems', [])
+WHERE "Product"."Id" = 1; //no
+
 
 4. Add products with no classification item
 
 
 5. Get unclassified products
 
+
+//PG RELATIONAL
+
 SELECT * FROM "Product"
 LEFT JOIN "Product Classification Item" ON "Product"."Id" = "Product Classification Item"."ProductId"
 WHERE "Product Classification Item"."ProductId" IS NULL; 
 
+//MONGO RELATIONAL
 
 db.Product.aggregate([{
             $lookup: {
@@ -160,11 +178,20 @@ db.Product.aggregate([{
         }
         ])
 
+///PG DOCUMENTS
+
+SELECT * FROM "Product"
+WHERE   "Product"."Data"->'classificationItems' is null;
+
 
 6. Get products with no thumbnails??
 
+//PG RELATIONAL
+
 SELECT * FROM "Product" 
 WHERE "Product"."ThumbnailId" IS NULL;
+
+//MONGO RELATIONAL
 
 db.Product.find({"_thumbnailId": {$exists: false}})
 
@@ -176,6 +203,15 @@ db.Product.find({"_thumbnailId": {$exists: false}})
 
         6.1.2 Update product ThumbnailId 
 
+
+//PG DOCUMENTS
+
+SELECT * FROM "Product"
+WHERE   "Product"."Data"->'thumbnail' is null;
+
+//MONGO DOCUMENTS
+
+//NA
 7. Delete retailers with no products
 
 DELETE FROM "Retailer"
@@ -208,5 +244,51 @@ db.Retailer.aggregate([{
         }
         ])
 
-db.Product.remove( { _id: { $eq: ... } } )
+db.Retailer.remove( { _id: { $eq: ... } } )
 
+8. Delete thumbnail from randomly selected products 
+ 
+ //PG RELATIONAL
+
+DELETE FROM "Thumbnail"
+WHERE "Id" IN(
+SELECT "Product"."ThumbnailId" FROM "Product"
+WHERE "Product"."Id" IN [...]);
+
+//MONGO RELATIONAL
+
+db.Thumbnail.aggregate([{
+            $lookup: {
+                from: "Product",
+                localField: "_id",
+                foreignField: "_thumbnailId",
+                as: "products"
+            }
+        },{
+            $unwind: {
+                path: "$products",
+            }
+        },{
+            $match: {
+                "products._Id": {$in: [...]} //no
+            }
+        },{
+            $project:{
+                _id: 1,
+                name: 1
+            }
+        }
+        ])
+
+db.Thumbnail.remove( { _id: { $eq: ... } } )
+
+//PG DOCUMENTS
+
+UPDATE "Product"
+SET "Data" = "Data" - 'thumbnail'
+WHERE "Product"."Id" IN [...]
+RETURNING *;
+
+9. delete random product
+
+10. update product retailer
