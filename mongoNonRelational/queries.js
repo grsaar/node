@@ -92,10 +92,37 @@ async function getUnclassifiedProducts(oModels) {
     console.log(aResult);
 }
 
-async function getProductsWithNoThumbnails(oModels) {
-    const aResult = await oModels.Product.find({ "thumbnail": null }).catch(console.log);  
+async function getProductsWithThumbnails(oModels) {
+    const aResult = await oModels.Product.find({ "thumbnail": {$ne:null} }).catch(console.log);  
     console.log(aResult);
 
+}
+
+async function updateProductsStatuses (oModels){
+    const aTypeId = await oModels.Type.aggregate([{ $sample: { size: 1 } },  {$project:{internalId: 1}}]).catch(console.log);
+    const aStatuses = await oModels.Status.find({}).catch(console.log);
+    const oUpdateStatus = aStatuses[Math.floor(Math.random() * aStatuses.length)];
+    const oConditionStatus = aStatuses.find(oStatus => oStatus.internalId !== oUpdateStatus.internalId);
+    console.log(oUpdateStatus);
+    console.log(oConditionStatus.internalId);
+    console.log(aTypeId[0].internalId)
+    const oResult = await oModels.Product.updateMany(
+        {"type.internalId": aTypeId[0].internalId,"status.internalId": oConditionStatus.internalId},
+        {$set: 
+            {"status": oUpdateStatus}
+        }).catch(console.log);
+    console.log(oResult);
+}
+
+async function updateProductName (oModels){
+    const aProductId = await oModels.Product.find({}, {_id:1}).catch(console.log);
+    const sName = getRandomString(getRandomInteger(1,51));
+    const oResult = await oModels.Product.updateOne(
+        {"_id": aProductId[0]._id},
+        {$set: 
+            {"name": sName}
+        });
+    console.log(oResult);
 }
 
 async function deleteRandomProduct (oModels){
@@ -111,6 +138,8 @@ module.exports = {
     getCountryProducts,
     getProductsWithHierarchyCode,
     getUnclassifiedProducts,
-    getProductsWithNoThumbnails,
+    getProductsWithThumbnails,
+    updateProductsStatuses,
+    updateProductName,
     deleteRandomProduct
 }

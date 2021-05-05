@@ -2,6 +2,7 @@ const http = require('http');
 const hostName = '127.0.0.1';
 const fs = require('fs');
 const fastcsv = require('fast-csv');
+const si = require('systeminformation');
 const { Client } = require('pg');
 const connectionString = 'postgresql://postgres:parool2@127.0.0.1:8080';
 const {importDataToPostgresFromCsv} = require('./import/importData');
@@ -29,4 +30,5 @@ async function connectDatabase() {
   //await updateHierarchyCodesPg(db)
   await executeQueries(db)
   .catch(console.log);
+  //si.dockerContainerStats('*',console.log);
 })();

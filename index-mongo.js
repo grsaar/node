@@ -27,6 +27,6 @@ const defineModels = require('./mongoRelational/models');
   const oModels = defineModels(db);
   //await importDataToMongoFromCsv(oModels);
   //await updateHierarchyCodesMongo(db, oModels)
-  await executeQueries(db, oModels)
+  await executeQueries(oModels)
   .catch(console.log);
 })();

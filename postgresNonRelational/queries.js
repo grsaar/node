@@ -1,3 +1,5 @@
+const { Console } = require('console');
+const { accessSync } = require('fs');
 const {getRandomString, getRandomInteger} = require('../utils');
 
 async function addProducts (db){
@@ -93,15 +95,37 @@ async function getUnclassifiedProducts (db){
     console.log(oUnclassifiedProductsResult.rows);                                                        
 }
 
-async function getProductsWithNoThumbnails (db){
+async function getProductsWithThumbnails (db){
     const oProductsMissingThumbnailsResult = await db.query(`SELECT * FROM "Product"
-                                                            WHERE "Product"."Data"->'thumbnail' is null`)
-                                                         .catch(console.log);
-    if(oProductsMissingThumbnailsResult.rows.length){
+                                                            WHERE "Product"."Data"->'thumbnail' is not null`)
+                                                         .catch(console.log);                                                         
+   /* if(oProductsMissingThumbnailsResult.rows.length){
         oProductsMissingThumbnailsResult.rows.forEach(async function (oProduct){
             //?
         });
-    }                                                         
+    }    */                                                     
+}
+
+async function updateProductsStatuses (db){
+    const aTypeResult = await db.query(`SELECT "InternalId" FROM "Type" ORDER BY random() LIMIT 1`).catch(console.log);
+    const aStatusResult = await db.query(`SELECT * FROM "Status"`).catch(console.log);
+    const oUpdateStatus = aStatusResult.rows[Math.floor(Math.random() * aStatusResult.rows.length)];
+    const iConditionStatusId = aStatusResult.rows.find(oStatus => oStatus.InternalId !== oUpdateStatus.InternalId).InternalId;
+    const oResult = await db.query(`UPDATE "Product"
+                                    SET "Data" = jsonb_set("Data"::jsonb, '{status}', '{"InternalId": ${oUpdateStatus.InternalId}, "Name": "${oUpdateStatus.Name}"}')
+                                    WHERE ("Data" -> 'status' ->> 'InternalId')::int = ${iConditionStatusId}
+                                    AND ("Data" -> 'type' ->> 'InternalId')::int = ${aTypeResult.rows[0].InternalId}`).catch(console.log);
+    console.log(oResult);                                
+}
+
+async function updateProductName(db){
+    const oProductResult = await db.query(`SELECT "Id" FROM "Product" ORDER BY random() LIMIT 1`).catch(console.log);
+    const sName = getRandomString(getRandomInteger(1, 51));
+    console.log(oProductResult);
+     const oResult = await db.query(`UPDATE "Product"
+                                    SET "Data" = jsonb_set("Data"::jsonb, '{name}', '"${sName}"')
+                                    WHERE "Product"."Id" = ${oProductResult.rows[0].Id}`).catch(console.log);
+    console.log(oResult);                                  
 }
 
 async function deleteRandomProduct (db){
@@ -117,6 +141,8 @@ module.exports = {
     getCountryProducts,
     getProductsWithHierarchyCode,
     getUnclassifiedProducts,
-    getProductsWithNoThumbnails,
+    getProductsWithThumbnails,
+    updateProductsStatuses,
+    updateProductName,
     deleteRandomProduct
 }

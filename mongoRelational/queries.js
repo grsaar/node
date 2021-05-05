@@ -4,10 +4,7 @@ const ObjectId = require('mongodb').ObjectID;
 async function addRetailers(db, oModels) {
     const aCountries = await oModels.Country.find({}, { _id: 1 }).catch(console.log);
     console.log(aCountries);
-    //while
-    /* async function delay(iMillis) {
-    return new Promise(resolve => setTimeout(resolve, iMillis));
-}*/
+   
     for (let i = 0; i < 5; i++) {
         await insertRetailer(db, aCountries, oModels);
     }
@@ -63,7 +60,7 @@ async function addProducts(db, oModels) {
     const oConditionData = {
         _id: oProduct._id
     };
-    await update(oModels, "Product", oUpdateData, oConditionData);
+    await update(oModels, "Product", oConditionData, oUpdateData);
 }
 
 async function insertProduct(oModels, aStatuses, aRetailers, aTypes) {
@@ -103,10 +100,11 @@ async function insertProductClassificationItem(oModels, oProduct) {
 
 }
 
-async function update(oModels, sTableToUpdate, oUpdateData, oConditionData) {
+async function update(oModels, sTableToUpdate, oConditionData, oUpdateData) {
     console.log(oConditionData);
     console.log(oUpdateData);
-    oModels[sTableToUpdate].updateOne(oConditionData, { $set: oUpdateData }).catch(console.log);
+    const result = await oModels[sTableToUpdate].updateMany(oConditionData, { $set: oUpdateData }).catch(console.log);
+    console.log(result)
 }
 
 async function getCountryProducts(oModels) {
@@ -209,9 +207,9 @@ async function getUnclassifiedProducts(oModels) {
     console.log(aResult);
 }
 
-async function getProductsWithNoThumbnails(oModels) {
-    const aProductsMissingThumbnailsResult = await oModels.Product.find({ "_thumbnailId": { $exists: false } }).catch(console.log);
-    if (aProductsMissingThumbnailsResult.length) {
+async function getProductsWithThumbnails(oModels) {
+    const aProductsMissingThumbnailsResult = await oModels.Product.find({ "_thumbnailId": { $exists: true } }).catch(console.log);
+   /* if (aProductsMissingThumbnailsResult.length) {
         aProductsMissingThumbnailsResult.forEach(async function (oProduct) {
             const oThumbnail = await insertThumbnail(oModels);
             console.log(oThumbnail);
@@ -224,9 +222,34 @@ async function getProductsWithNoThumbnails(oModels) {
             };
             await update(oModels, "Product", oUpdateData, oConditionData);
         });
-    }
+    } */
     console.log(aProductsMissingThumbnailsResult);
+}
 
+async function updateProductsStatuses (oModels){
+    const aTypeId = await oModels.Type.aggregate([{ $sample: { size: 1 } },  {$project:{_id: 1}}]).catch(console.log);
+    const aStatusIds = await oModels.Status.find({},{_id:1}).catch(console.log);
+    const iUpdateStatusId = aStatusIds[Math.floor(Math.random() * aStatusIds.length)]._id;
+    const iConditionStatusId = aStatusIds.find(oStatus => oStatus._id !== iUpdateStatusId);
+    const oConditionData = {
+        "_typeId": aTypeId[0]._id,
+        "_statusId": iConditionStatusId._id
+    };
+    const oUpdateData = {
+        "_statusId": iUpdateStatusId
+    };
+    update(oModels, "Product", oConditionData, oUpdateData);
+}
+
+async function updateProductName (oModels){
+    const aProductId = await oModels.Product.find({}, {_id:1}).catch(console.log);
+    const oConditionData ={
+        "_id": aProductId[0]._id
+    };
+    const oUpdateData = {
+        "name": getRandomString(getRandomInteger(1, 51)) 
+    };
+    update(oModels, "Product", oConditionData, oUpdateData);
 }
 
 async function deleteRetailersWithNoProducts(oModels) {
@@ -277,7 +300,9 @@ module.exports = {
     getCountryProducts,
     getProductsWithHierarchyCode,
     getUnclassifiedProducts,
-    getProductsWithNoThumbnails,
+    getProductsWithThumbnails,
+    updateProductsStatuses,
+    updateProductName,
     deleteRetailersWithNoProducts,
     deleteRandomProduct
 }
