@@ -1,6 +1,6 @@
 const { getRandomString, getRandomInteger } = require('../utils');
 
-async function addRetailers(db) {
+async function addRetailer(db) {
     const oCountryResult = await db.query(`SELECT "Id" FROM "Country"`).catch(console.log);
     const aCountryIds = oCountryResult.rows.map(oCountry => oCountry.Id);
     const iInsertedRows = await insertRetailer(db, aCountryIds);
@@ -13,10 +13,10 @@ async function insertRetailer(db, aCountryIds) {
     const sEmail = getRandomString(getRandomInteger(1, 11)) + '@' + getRandomString(getRandomInteger(1, 10)) + '.com';
     const iCountryId = aCountryIds[Math.floor(Math.random() * aCountryIds.length)];
     const aRetailerData = [sName, sTaxId, sEmail, iCountryId];
-    return new Promise ((resolve, reject) =>{
+    return new Promise((resolve, reject) => {
         db.query(`INSERT INTO "Retailer"("Name", "TaxId", "Email", "CountryId") VALUES($1,$2,$3,$4)`, aRetailerData, (err, res) => {
-            if(err){
-                reject(err);                
+            if (err) {
+                reject(err);
             } else {
                 resolve(res.rowCount);
             }
@@ -39,7 +39,7 @@ async function insertThumbnail(db) {
     });
 }
 
-async function addProducts(db) {
+async function addProduct(db) {
     const oStatusResult = await db.query(`SELECT "Id" FROM "Status"`).catch(console.log);
     const aStatusIds = oStatusResult.rows.map(oStatus => oStatus.Id);
     const oRetailerResult = await db.query(`SELECT "Id" FROM "Retailer"`).catch(console.log);
@@ -50,18 +50,23 @@ async function addProducts(db) {
     const oProductResult = await insertProduct(db, aStatusIds, aRetailerIds, aTypeIds);
     console.log(`Inserted ${oProductResult.rowCount} Product`);
 
-    const oProductClassificationItemResult = await insertProductClassificationItem(db, oProductResult.rows[0]);
-    console.log(`Inserted ${oProductClassificationItemResult.rowCount} Product Classification Item`);
+    //Generate random boolean to decide if classificationItem will be added or not
+    if (getRandomInteger(0, 2)) {
+        const oProductClassificationItemResult = await insertProductClassificationItem(db, oProductResult.rows[0]);
+        console.log(`Inserted ${oProductClassificationItemResult.rowCount} Product Classification Item`);
+    }
 
-    const oThumbnailResult = await insertThumbnail(db);
-    console.log(`Inserted ${oThumbnailResult.rowCount} Thumbnail`);
+    if (getRandomInteger(0, 2)) {
+        const oThumbnailResult = await insertThumbnail(db);
+        console.log(`Inserted ${oThumbnailResult.rowCount} Thumbnail`);
 
-    const oThumbnail = oThumbnailResult.rows[0];
-    const oUpdateData = {
-        'ThumbnailId': oThumbnail.Id
-    };
-    const oConditionData = { "Id": oProductResult.rows[0].Id };
-    await update(db, "Product", oUpdateData, oConditionData);
+        const oThumbnail = oThumbnailResult.rows[0];
+        const oUpdateData = {
+            'ThumbnailId': oThumbnail.Id
+        };
+        const oConditionData = { "Id": oProductResult.rows[0].Id };
+        await update(db, "Product", oUpdateData, oConditionData);
+    }
 }
 
 async function insertProduct(db, aStatusIds, aRetailerIds, aTypeIds) {
@@ -72,7 +77,6 @@ async function insertProduct(db, aStatusIds, aRetailerIds, aTypeIds) {
     const iRetailerId = aRetailerIds[Math.floor(Math.random() * aRetailerIds.length)];
     const iTypeId = aTypeIds[Math.floor(Math.random() * aTypeIds.length)];
     const aProductData = [sName, sDesctiption, iStatusId, sDateAdded, iRetailerId, iTypeId];
-    console.log(aProductData);
     return new Promise((resolve, reject) => {
         db.query(`INSERT INTO "Product"("Name", "Description", "StatusId", "DateAdded", "RetailerId", "TypeId")
                  VALUES($1,$2,$3,$4,$5,$6) returning "Id"`, aProductData, (err, res) => {
@@ -92,13 +96,13 @@ async function insertProductClassificationItem(db, oProduct) {
     const aProductClasItemData = [oProduct.Id, iClassificationItemId];
 
     return new Promise((resolve, reject) => {
-         db.query(`INSERT INTO "Product Classification Item"("ProductId", "ClassificationItemId") VALUES($1,$2)`, aProductClasItemData, (err, res) => {
-            if(err){
+        db.query(`INSERT INTO "Product Classification Item"("ProductId", "ClassificationItemId") VALUES($1,$2)`, aProductClasItemData, (err, res) => {
+            if (err) {
                 reject(err);
             } else {
                 resolve(res);
             }
-         });
+        });
     });
 
 }
@@ -129,7 +133,7 @@ async function update(db, sTableToUpdate, oUpdateData, oConditionData) {
 
     //console.log(`UPDATE "${sTableToUpdate}" SET ${sSetQuery} WHERE ${sConditionQuery}`);
     const oUpdateResult = await db.query(`UPDATE "${sTableToUpdate}" SET ${sSetQuery} WHERE ${sConditionQuery}`).catch(console.log);
-    
+
     console.log(`Updated ${oUpdateResult.rowCount} row(s) in ${sTableToUpdate} table`);
 }
 
@@ -151,7 +155,7 @@ async function getProductsWithHierarchyCode(db) {
                                             INNER JOIN "Product" ON "Product"."Id" = "Product Classification Item"."ProductId") 
                                             ON "Product Classification Item"."ClassificationItemId" = "Classification Item"."Id"
                                             WHERE "Classification Item"."HierarchyCode" LIKE '${sHierarchyCode}'`).catch(console.log);
-    console.log(`Get products with HierarcyCode result: ${oProductResult.rowCount} rows`);  
+    console.log(`Get products with HierarcyCode result: ${oProductResult.rowCount} rows`);
 
 }
 
@@ -160,7 +164,7 @@ async function getUnclassifiedProducts(db) {
                                                         LEFT JOIN "Product Classification Item"
                                                         ON "Product"."Id" = "Product Classification Item"."ProductId"
                                                         WHERE "Product Classification Item"."ProductId" IS NULL`).catch(console.log);
-    console.log(`Get unclassified products result: ${oUnclassifiedProductsResult.rows} rows`);
+    console.log(`Get unclassified products result: ${oUnclassifiedProductsResult.rows.length} rows`);
 }
 
 async function getProductsWithThumbnails(db) {
@@ -169,7 +173,7 @@ async function getProductsWithThumbnails(db) {
     console.log(`Get products with thumbnails result: ${oProductsWithThumbnailsResult.rowCount} rows`);
 }
 
-async function updateProductsStatuses(db){
+async function updateProductsStatuses(db) {
     const aTypeResult = await db.query(`SELECT "Id" FROM "Type" ORDER BY random() LIMIT 1`).catch(console.log);
     const oStatusResult = await db.query(`SELECT "Id" FROM "Status"`).catch(console.log);
     const aStatusIds = oStatusResult.rows.map(oStatus => oStatus.Id);
@@ -186,15 +190,15 @@ async function updateProductsStatuses(db){
     update(db, "Product", oUpdateData, oConditionData);
 }
 
-async function updateProductName(db){
+async function updateProductName(db) {
     const oProductResult = await db.query(`SELECT "Id" FROM "Product" ORDER BY random() LIMIT 1`).catch(console.log);
     const oUpdateData = {
-        "Name": getRandomString(getRandomInteger(1, 51)),        
+        "Name": getRandomString(getRandomInteger(1, 51)),
     };
     const oConditionData = {
         "Id": oProductResult.rows[0].Id
     };
-    update(db,"Product", oUpdateData, oConditionData);
+    update(db, "Product", oUpdateData, oConditionData);
 }
 
 async function deleteRandomProduct(db) {
@@ -205,8 +209,8 @@ async function deleteRandomProduct(db) {
 }
 
 module.exports = {
-    addRetailers,
-    addProducts,
+    addRetailer,
+    addProduct,
     getCountryProducts,
     getProductsWithHierarchyCode,
     getUnclassifiedProducts,

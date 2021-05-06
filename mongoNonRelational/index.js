@@ -1,31 +1,25 @@
-const {addRetailers,addProducts, getCountryProducts,
+const {addProduct, getCountryProducts,
     getProductsWithHierarchyCode, getUnclassifiedProducts,
-    getProductsWithThumbnails, updateProductsStatuses, updateProductName, deleteRetailersWithNoProducts,
+    getProductsWithThumbnails, updateProductsStatuses, updateProductName,
     deleteRandomProduct} = require('./queries');
     const si = require('systeminformation');
 
 async function executeQueries (db, oModels){
-  exec(db, oModels);
-    
-    //await addProducts(db,oModels)
-    //await getCountryProducts(db, oModels);
-    //getProductsWithHierarchyCode(db, oModels);
-    //getUnclassifiedProducts(db);
-    //getProductsWithThumbnails(db);
-    //updateProductsStatuses(db, oModels);
-    //updateProductName(db, oModels);
-    //deleteRandomProduct(db, oModels);
+    runQuery(db, oModels, addProduct, 1000);
+    setTimeout(runQuery, 1000, db, oModels, getCountryProducts, 10000); 
+    setTimeout(runQuery, 1200, db, oModels, getProductsWithHierarchyCode, 10000);
+    setTimeout(runQuery, 1400, db, oModels, getUnclassifiedProducts, 10000);
+    setTimeout(runQuery, 1600, db, oModels, getProductsWithThumbnails, 10000);
+    setTimeout(runQuery, 1800, db, oModels, updateProductsStatuses, 10000);
+    setTimeout(runQuery, 2000, db, oModels, updateProductName, 10000);
+    setTimeout(runQuery, 2000, db, oModels, deleteRandomProduct, 100000);
 }
 
-async function exec (db, oModels){
+async function runQuery (db, oModels, fRunFunction, iDelay){
     while(true){
-      //updateProductsStatuses(db, oModels)
-      //updateProductName(db);
-      addProducts(db, oModels);
-      //getCountryProducts(db, oModels);
-      //deleteRandomProduct(db);
+      fRunFunction(db, oModels);
       //si.dockerContainerStats('*',obj => console.log(JSON.stringify(obj, null, 2)));
-      await delay(1000)
+      await delay(iDelay)
     }
   } 
   

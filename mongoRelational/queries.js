@@ -1,10 +1,10 @@
 const { getRandomString, getRandomInteger } = require('../utils');
 const ObjectId = require('mongodb').ObjectID;
 
-async function addRetailers(oModels) {
+async function addRetailer(oModels) {
     const aCountries = await oModels.Country.find({}, { _id: 1 }).catch(console.log);
     const oRetailerResult = await insertRetailer(aCountries, oModels);
-    console.log(`Inserted 1 retailer: ${oRetailerResult}`);
+    console.log(`Inserted 1 retailer with _id: ${oRetailerResult._id}`);
 }
 
 async function insertRetailer(aCountries, oModels) {
@@ -18,15 +18,14 @@ async function insertRetailer(aCountries, oModels) {
         email: sEmail,
         _countryId: iCountryId
     };
-    console.log(oRetailerData);
-    return new Promise ((resolve, reject) => {
-         oModels.Retailer.create(oRetailerData, (err, res) => {
-             if(err){
-                 reject(err)
-             } else {
-                 resolve(res);
-             }
-         });
+    return new Promise((resolve, reject) => {
+        oModels.Retailer.create(oRetailerData, (err, res) => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(res);
+            }
+        });
     });
 }
 
@@ -48,27 +47,31 @@ async function insertThumbnail(oModels) {
     });
 }
 
-async function addProducts(oModels) {
+async function addProduct(oModels) {
     const aStatuses = await oModels.Status.find({}, { _id: 1 }).catch(console.log);
     const aRetailers = await oModels.Retailer.find({}, { _id: 1 }).catch(console.log);
     const aTypes = await oModels.Type.find({}, { _id: 1 }).catch(console.log);
 
     const oProduct = await insertProduct(oModels, aStatuses, aRetailers, aTypes);
-    console.log(`Inserted 1 thumbnail: ${oProduct}`);
+    console.log(`Inserted 1 product with _id: ${oProduct._id}`);
 
-    const oProductClassificationItem = await insertProductClassificationItem(oModels, oProduct);
-    console.log(`Inserted 1 thumbnail: ${oProductClassificationItem}`);
+    if (getRandomInteger(0, 2)) {
+        const oProductClassificationItem = await insertProductClassificationItem(oModels, oProduct);
+        console.log(`Inserted 1 product classification item with _id: ${oProductClassificationItem._id}`);
+    }
 
-    const oThumbnail = await insertThumbnail(oModels);
-    console.log(`Inserted 1 thumbnail: ${oThumbnail}`);
+    if (getRandomInteger(0, 2)) {
+        const oThumbnail = await insertThumbnail(oModels);
+        console.log(`Inserted 1 thumbnail with _id: ${oThumbnail._id}`);
 
-    const oUpdateData = {
-        _thumbnailId: oThumbnail._id
-    };
-    const oConditionData = {
-        _id: oProduct._id
-    };
-    await update(oModels, "Product", oConditionData, oUpdateData);
+        const oUpdateData = {
+            _thumbnailId: oThumbnail._id
+        };
+        const oConditionData = {
+            _id: oProduct._id
+        };
+        await update(oModels, "Product", oConditionData, oUpdateData);
+    }
 }
 
 async function insertProduct(oModels, aStatuses, aRetailers, aTypes) {
@@ -114,7 +117,6 @@ async function insertProductClassificationItem(oModels, oProduct) {
             }
         });
     });
-    //await oModels.ProductClassificationItem.create(oProductClasItemData).catch(console.log);
 }
 
 async function update(oModels, sTableToUpdate, oConditionData, oUpdateData) {
@@ -164,7 +166,7 @@ async function getProductsWithHierarchyCode(oModels) {
     const oHierarchyCode = sHierarchyCode.substring(1, sHierarchyCode.length - 1);
     const aResult = await oModels.ClassificationItem.aggregate([
         {
-            $match: {"hierarchyCode": oHierarchyCode }
+            $match: { "hierarchyCode": oHierarchyCode }
         }, {
             $lookup: {
                 from: "ProductClassificationItem",
@@ -192,7 +194,7 @@ async function getProductsWithHierarchyCode(oModels) {
     ]).catch(console.log);
 
     let iProductCount = 0;
-    if(aResult.length){
+    if (aResult.length) {
         aResult.forEach(oClassificationItem => {
             iProductCount += oClassificationItem.products.length;
         });
@@ -220,7 +222,7 @@ async function getUnclassifiedProducts(oModels) {
     }
     ]).catch(console.log);
 
-    console.log(`Get unclassified products result: ${aResult.length} products`); 
+    console.log(`Get unclassified products result: ${aResult.length} products`);
 }
 
 async function getProductsWithThumbnails(oModels) {
@@ -228,9 +230,9 @@ async function getProductsWithThumbnails(oModels) {
     console.log(`Get products with thumbnails result: ${aProductsMissingThumbnailsResult.length} products`);
 }
 
-async function updateProductsStatuses (oModels){
-    const aTypeId = await oModels.Type.aggregate([{ $sample: { size: 1 } },  {$project:{_id: 1}}]).catch(console.log);
-    const aStatusIds = await oModels.Status.find({},{_id:1}).catch(console.log);
+async function updateProductsStatuses(oModels) {
+    const aTypeId = await oModels.Type.aggregate([{ $sample: { size: 1 } }, { $project: { _id: 1 } }]).catch(console.log);
+    const aStatusIds = await oModels.Status.find({}, { _id: 1 }).catch(console.log);
     const iUpdateStatusId = aStatusIds[Math.floor(Math.random() * aStatusIds.length)]._id;
     const iConditionStatusId = aStatusIds.find(oStatus => oStatus._id !== iUpdateStatusId);
     const oConditionData = {
@@ -243,28 +245,28 @@ async function updateProductsStatuses (oModels){
     update(oModels, "Product", oConditionData, oUpdateData);
 }
 
-async function updateProductName (oModels){
-    const aProductId = await oModels.Product.find({}, {_id:1}).catch(console.log);
-    const oConditionData ={
+async function updateProductName(oModels) {
+    const aProductId = await oModels.Product.find({}, { _id: 1 }).catch(console.log);
+    const oConditionData = {
         "_id": aProductId[0]._id
     };
     const oUpdateData = {
-        "name": getRandomString(getRandomInteger(1, 51)) 
+        "name": getRandomString(getRandomInteger(1, 51))
     };
     update(oModels, "Product", oConditionData, oUpdateData);
 }
 
-async function deleteRandomProduct (oModels){
+async function deleteRandomProduct(oModels) {
     const aProducts = await oModels.Product.aggregate([{ $sample: { size: 1 } }]).catch(console.log);
     const oProductId = new ObjectId(aProducts[0]._id);
-    const oDeleteResult = await oModels.Product.deleteOne({ _id: { $eq: oProductId }});
+    const oDeleteResult = await oModels.Product.deleteOne({ _id: { $eq: oProductId } });
     console.log(`Deleted ${oDeleteResult.deletedCount} product`);
-    
+
 }
 
 module.exports = {
-    addRetailers,
-    addProducts,
+    addRetailer,
+    addProduct,
     getCountryProducts,
     getProductsWithHierarchyCode,
     getUnclassifiedProducts,

@@ -2,7 +2,7 @@ const { Console } = require('console');
 const { accessSync } = require('fs');
 const {getRandomString, getRandomInteger} = require('../utils');
 
-async function addProducts (db){
+async function addProduct (db){
     const oStatusResult =  await db.query(`SELECT "InternalId", "Name" FROM "Status"`).catch(console.log);
     const oCountriesResult =  await db.query(`SELECT "InternalId", "Name" FROM "Country"`).catch(console.log);
     const oTypeResult =  await db.query(`SELECT "InternalId", "Name" FROM "Type"`).catch(console.log);
@@ -10,7 +10,7 @@ async function addProducts (db){
     const oClassificationResult =  await db.query(`SELECT "InternalId", "Name" FROM "Classification"`).catch(console.log);
     
     const aProductData = prepareProductData(oStatusResult.rows, oCountriesResult.rows, oTypeResult.rows, oClassificationItemsResult.rows, oClassificationResult.rows);
-    console.log(aProductData);
+   // console.log(aProductData);
     const iInsertedRows = await insertProduct(db, aProductData);
       console.log(`Inserted ${iInsertedRows} product`);
 }
@@ -37,8 +37,6 @@ function prepareProductData (aStatuses, aCountries, aTypes, aClassificationItems
         country: oCountry
     }
 
-    //Generate random boolean to decide if thumbnail will be added or not
-    const bAddThumbnail = getRandomInteger(0,2);
     const aProduct = [{
         name: getRandomString(getRandomInteger(1,51)),
         description: getRandomString(getRandomInteger(1,51)),
@@ -46,8 +44,8 @@ function prepareProductData (aStatuses, aCountries, aTypes, aClassificationItems
         dateAdded: sDateAdded,        
         retailer: oRetailer,
         type: oType,
-        classificationItems: [oClassificationItem],
-        thumbnail: bAddThumbnail ? oThumbnail : null
+        classificationItems: getRandomInteger(0,2) ? [oClassificationItem] : [], //Generate random boolean to decide if classificationItem will be added or not
+        thumbnail: getRandomInteger(0,2) ? oThumbnail : null
     }];
     return aProduct;
 }
@@ -79,16 +77,16 @@ async function getProductsWithHierarchyCode(db){
     const oProductResult = await db.query(`SELECT "Id" FROM "Product", 
                                         jsonb_array_elements(("Data"::jsonb)->'classificationItems') AS classificationItems(ClassificationItem)
                                         WHERE  (classificationItems.ClassificationItem ->> 'HierarchyCode') LIKE '${sHierarchyCode}'`)
-                                                                            .catch(console.log);
+                                                                            .catch(console.log);                                                                     
     console.log(`Get products with HierarcyCode result: ${oProductResult.rowCount} rows`);                                   
 
 }
 
 async function getUnclassifiedProducts (db){
     const oUnclassifiedProductsResult = await db.query(`SELECT * FROM "Product"
-                                                        WHERE "Product"."Data"->'classificationItems' is null`)
+                                                        WHERE jsonb_array_length(("Product"."Data"::jsonb)->'classificationItems') = 0`)
                                                         .catch(console.log);
-    console.log(`Get unclassified products result: ${oUnclassifiedProductsResult.rows} rows`);                                                        
+    console.log(`Get unclassified products result: ${oUnclassifiedProductsResult.rowCount} rows`);                                                        
 }
 
 async function getProductsWithThumbnails (db){
@@ -112,7 +110,6 @@ async function updateProductsStatuses (db){
 async function updateProductName(db){
     const oProductResult = await db.query(`SELECT "Id" FROM "Product" ORDER BY random() LIMIT 1`).catch(console.log);
     const sName = getRandomString(getRandomInteger(1, 51));
-    console.log(oProductResult);
      const oUpdateResult = await db.query(`UPDATE "Product"
                                     SET "Data" = jsonb_set("Data"::jsonb, '{name}', '"${sName}"')
                                     WHERE "Product"."Id" = ${oProductResult.rows[0].Id}`).catch(console.log);
@@ -128,7 +125,7 @@ async function deleteRandomProduct (db){
 }
 
 module.exports = {
-    addProducts,
+    addProduct,
     getCountryProducts,
     getProductsWithHierarchyCode,
     getUnclassifiedProducts,

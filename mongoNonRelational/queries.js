@@ -1,7 +1,7 @@
 const {getRandomString, getRandomInteger} = require('../utils');
 const ObjectId = require('mongodb').ObjectID;
 
-async function addProducts (db, oModels){
+async function addProduct (db, oModels){
     const aStatuses =  await oModels.Status.find({}, {_id:0}).catch(console.log);
     const aCountries =  await oModels.Country.find({}, {_id:0}).catch(console.log);
     const aTypes =  await oModels.Type.find({}, {_id:0}).catch(console.log);
@@ -51,8 +51,8 @@ function prepareProductData(aStatuses, aCountries, aTypes, aClassificationItems,
         dateAdded: sDateAdded,        
         retailer: oRetailer,
         type: oType,
-        classificationItems: [oModifiedClassificationItem],
-        thumbnail: oThumbnail
+        classificationItems: getRandomInteger(0,2) ? [oModifiedClassificationItem] : [],
+        thumbnail: getRandomInteger(0,2) ? oThumbnail : null
     };
     return oProduct;
 }
@@ -134,7 +134,6 @@ async function updateProductName (db){
 
 async function deleteRandomProduct (db){
     const aProduct = await db.collection("Product").aggregate([{ $sample: { size: 1 } }]).toArray();
-    console.log(aProduct);
     const oProductId = new ObjectId(aProduct[0]._id);
     const oDeleteResult = await db.collection("Product").deleteOne({ _id: { $eq: oProductId }});
 
@@ -142,7 +141,7 @@ async function deleteRandomProduct (db){
 }
 
 module.exports = {
-    addProducts,
+    addProduct,
     getCountryProducts,
     getProductsWithHierarchyCode,
     getUnclassifiedProducts,
