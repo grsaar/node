@@ -4,26 +4,28 @@ const {addRetailers,addProducts, getCountryProducts,
     deleteRandomProduct} = require('./queries');
     const si = require('systeminformation');
 
-async function executeQueries (oModels){
-    exec(oModels);
+async function executeQueries (db, oModels){
+  exec(db, oModels);
+    
     //await addProducts(db,oModels)
     //await getCountryProducts(db, oModels);
-    //getProductsWithHierarchyCode(oModels);
-    //getUnclassifiedProducts(oModels);
-    //getProductsWithThumbnails(oModels);
-    //updateProductsStatuses(oModels);
-    //updateProductName(oModels);
-    //deleteRetailersWithNoProducts(oModels);
-    //deleteRandomProduct(oModels);
+    //getProductsWithHierarchyCode(db, oModels);
+    //getUnclassifiedProducts(db);
+    //getProductsWithThumbnails(db);
+    //updateProductsStatuses(db, oModels);
+    //updateProductName(db, oModels);
+    //deleteRandomProduct(db, oModels);
 }
 
-async function exec (oModels){
+async function exec (db, oModels){
     while(true){
-      updateProductsStatuses(oModels)
-      //updateProductName(oModels);
-      //addProducts(db);
-      si.dockerContainerStats('*',obj => console.log(JSON.stringify(obj, null, 2)));
-      await delay(10000)
+      //updateProductsStatuses(db, oModels)
+      //updateProductName(db);
+      addProducts(db, oModels);
+      //getCountryProducts(db, oModels);
+      //deleteRandomProduct(db);
+      //si.dockerContainerStats('*',obj => console.log(JSON.stringify(obj, null, 2)));
+      await delay(1000)
     }
   } 
   

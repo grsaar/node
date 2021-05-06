@@ -3,9 +3,8 @@ const { getRandomString, getRandomInteger } = require('../utils');
 async function addRetailers(db) {
     const oCountryResult = await db.query(`SELECT "Id" FROM "Country"`).catch(console.log);
     const aCountryIds = oCountryResult.rows.map(oCountry => oCountry.Id);
-    for (let i = 0; i < 5; i++) {
-        await insertRetailer(db, aCountryIds);
-    }
+    const iInsertedRows = await insertRetailer(db, aCountryIds);
+    console.log(`Inserted ${iInsertedRows} Retailer`);
 }
 
 async function insertRetailer(db, aCountryIds) {
@@ -14,22 +13,27 @@ async function insertRetailer(db, aCountryIds) {
     const sEmail = getRandomString(getRandomInteger(1, 11)) + '@' + getRandomString(getRandomInteger(1, 10)) + '.com';
     const iCountryId = aCountryIds[Math.floor(Math.random() * aCountryIds.length)];
     const aRetailerData = [sName, sTaxId, sEmail, iCountryId];
-    console.log(aRetailerData);
-    await db.query(`INSERT INTO "Retailer"("Name", "TaxId", "Email", "CountryId") VALUES($1,$2,$3,$4)`, aRetailerData).catch(console.log);
+    return new Promise ((resolve, reject) =>{
+        db.query(`INSERT INTO "Retailer"("Name", "TaxId", "Email", "CountryId") VALUES($1,$2,$3,$4)`, aRetailerData, (err, res) => {
+            if(err){
+                reject(err);                
+            } else {
+                resolve(res.rowCount);
+            }
+        });
+    });
 }
 
 async function insertThumbnail(db) {
     const sName = getRandomString(getRandomInteger(1, 51));
     const sData = getRandomString(getRandomInteger(999, 1001));
-    //gives utf8 error
-    const sEncodedData = Buffer.from(sData, 'base64');
     const aThumbnailData = [sName, sData];
     return new Promise((resolve, reject) => {
         db.query(`INSERT INTO "Thumbnail"("Name", "Data") VALUES($1,$2) returning "Id"`, aThumbnailData, (err, res) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(res.rows[0]);
+                resolve(res);
             }
         });
     });
@@ -43,15 +47,20 @@ async function addProducts(db) {
     const oTypeResult = await db.query(`SELECT * FROM "Type"`).catch(console.log);
     const aTypeIds = oTypeResult.rows.map(oType => oType.Id);
 
-    const aProduct = await insertProduct(db, aStatusIds, aRetailerIds, aTypeIds);
-    console.log('productId: ' + aProduct[0].Id);
-    await insertProductClassificationItem(db, aProduct[0]);
-    const oThumbnail = await insertThumbnail(db);
+    const oProductResult = await insertProduct(db, aStatusIds, aRetailerIds, aTypeIds);
+    console.log(`Inserted ${oProductResult.rowCount} Product`);
+
+    const oProductClassificationItemResult = await insertProductClassificationItem(db, oProductResult.rows[0]);
+    console.log(`Inserted ${oProductClassificationItemResult.rowCount} Product Classification Item`);
+
+    const oThumbnailResult = await insertThumbnail(db);
+    console.log(`Inserted ${oThumbnailResult.rowCount} Thumbnail`);
+
+    const oThumbnail = oThumbnailResult.rows[0];
     const oUpdateData = {
-        'ThumbnailId': oThumbnail.Id,
-        'Description': 'Yuhuuu'
+        'ThumbnailId': oThumbnail.Id
     };
-    const oConditionData = { "Id": aProduct[0].Id };
+    const oConditionData = { "Id": oProductResult.rows[0].Id };
     await update(db, "Product", oUpdateData, oConditionData);
 }
 
@@ -70,7 +79,7 @@ async function insertProduct(db, aStatusIds, aRetailerIds, aTypeIds) {
             if (err) {
                 reject(err);
             } else {
-                resolve(res.rows);
+                resolve(res);
             }
         });
     });
@@ -81,7 +90,16 @@ async function insertProductClassificationItem(db, oProduct) {
     const aClasItemIds = oClassificationItemResult.rows.map(oClasItem => oClasItem.Id);
     const iClassificationItemId = aClasItemIds[Math.floor(Math.random() * aClasItemIds.length)];
     const aProductClasItemData = [oProduct.Id, iClassificationItemId];
-    await db.query(`INSERT INTO "Product Classification Item"("ProductId", "ClassificationItemId") VALUES($1,$2)`, aProductClasItemData).catch(console.log);
+
+    return new Promise((resolve, reject) => {
+         db.query(`INSERT INTO "Product Classification Item"("ProductId", "ClassificationItemId") VALUES($1,$2)`, aProductClasItemData, (err, res) => {
+            if(err){
+                reject(err);
+            } else {
+                resolve(res);
+            }
+         });
+    });
 
 }
 
@@ -106,20 +124,22 @@ async function update(db, sTableToUpdate, oUpdateData, oConditionData) {
             sConditionQuery += ` "${sKey}" = ${oConditionData[sKey]} AND `;
         }
     });
+    //to remove last 'AND'
     sConditionQuery = sConditionQuery.substring(0, sConditionQuery.length - 4);
 
-    console.log(`UPDATE "${sTableToUpdate}" SET ${sSetQuery} WHERE ${sConditionQuery}`);
-    db.query(`UPDATE "${sTableToUpdate}" SET ${sSetQuery} WHERE ${sConditionQuery}`)
-        .catch(console.log);
+    //console.log(`UPDATE "${sTableToUpdate}" SET ${sSetQuery} WHERE ${sConditionQuery}`);
+    const oUpdateResult = await db.query(`UPDATE "${sTableToUpdate}" SET ${sSetQuery} WHERE ${sConditionQuery}`).catch(console.log);
+    
+    console.log(`Updated ${oUpdateResult.rowCount} row(s) in ${sTableToUpdate} table`);
 }
 
 async function getCountryProducts(db) {
     const iCountryId = getRandomInteger(1, 198);
-    const oResult = await db.query(`SELECT "Country"."Id" AS "CountryId", "Retailer"."Id" AS "RetailerId", "Product".* FROM "Country" 
-    LEFT JOIN "Retailer" ON "Country"."Id" = "Retailer"."CountryId"
-    LEFT JOIN "Product" ON "Product"."RetailerId" = "Retailer"."Id"
-    WHERE "Country"."Id" = ${iCountryId}`).catch(console.log);
-    console.log(oResult.rows);
+    const oProductResult = await db.query(`SELECT "Country"."Id" AS "CountryId", "Retailer"."Id" AS "RetailerId", "Product".* FROM "Country" 
+                                            LEFT JOIN "Retailer" ON "Country"."Id" = "Retailer"."CountryId"
+                                            LEFT JOIN "Product" ON "Product"."RetailerId" = "Retailer"."Id"
+                                            WHERE "Country"."Id" = ${iCountryId}`).catch(console.log);
+    console.log(`Get country products result: ${oProductResult.rowCount} rows`);
 }
 
 
@@ -128,11 +148,10 @@ async function getProductsWithHierarchyCode(db) {
     const sHierarchyCode = oClassificationItem.rows[0].HierarchyCode + '%';
     console.log(sHierarchyCode);
     const oProductResult = await db.query(`SELECT "Product".*, "Classification Item"."HierarchyCode", "Classification Item"."Id" FROM "Classification Item" INNER JOIN ("Product Classification Item" 
-                                    INNER JOIN "Product" ON "Product"."Id" = "Product Classification Item"."ProductId") 
-                                    ON "Product Classification Item"."ClassificationItemId" = "Classification Item"."Id"
-                                    WHERE "Classification Item"."HierarchyCode" LIKE '${sHierarchyCode}'`)
-        .catch(console.log);
-    console.log(oProductResult.rows);
+                                            INNER JOIN "Product" ON "Product"."Id" = "Product Classification Item"."ProductId") 
+                                            ON "Product Classification Item"."ClassificationItemId" = "Classification Item"."Id"
+                                            WHERE "Classification Item"."HierarchyCode" LIKE '${sHierarchyCode}'`).catch(console.log);
+    console.log(`Get products with HierarcyCode result: ${oProductResult.rowCount} rows`);  
 
 }
 
@@ -140,23 +159,14 @@ async function getUnclassifiedProducts(db) {
     const oUnclassifiedProductsResult = await db.query(`SELECT * FROM "Product"
                                                         LEFT JOIN "Product Classification Item"
                                                         ON "Product"."Id" = "Product Classification Item"."ProductId"
-                                                        WHERE "Product Classification Item"."ProductId" IS NULL`)
-        .catch(console.log);
-    console.log(oUnclassifiedProductsResult.rows);
+                                                        WHERE "Product Classification Item"."ProductId" IS NULL`).catch(console.log);
+    console.log(`Get unclassified products result: ${oUnclassifiedProductsResult.rows} rows`);
 }
 
 async function getProductsWithThumbnails(db) {
-    const oProductsMissingThumbnailsResult = await db.query(`SELECT * FROM "Product" 
-                                                         WHERE "Product"."ThumbnailId" IS NOT NULL`)
-        .catch(console.log);
-   /* if (oProductsMissingThumbnailsResult.rows.length) {
-        oProductsMissingThumbnailsResult.rows.forEach(async function (oProduct) {
-            const oThumbnail = await insertThumbnail(db);
-            const oUpdateData = { 'ThumbnailId': oThumbnail.Id };
-            const oConditionData = { "Id": oProduct.Id };
-            await update(db, "Product", oUpdateData, oConditionData);
-        });
-    } */
+    const oProductsWithThumbnailsResult = await db.query(`SELECT * FROM "Product" 
+                                                         WHERE "Product"."ThumbnailId" IS NOT NULL`).catch(console.log);
+    console.log(`Get products with thumbnails result: ${oProductsWithThumbnailsResult.rowCount} rows`);
 }
 
 async function updateProductsStatuses(db){
@@ -187,20 +197,11 @@ async function updateProductName(db){
     update(db,"Product", oUpdateData, oConditionData);
 }
 
-async function deleteRetailersWithNoProducts(db) {
-    await db.query(`DELETE FROM "Retailer"
-    WHERE "Id" IN(SELECT DISTINCT "Retailer"."Id" FROM "Retailer"
-    LEFT JOIN "Product" ON "Retailer"."Id" = "Product"."RetailerId"
-    WHERE "Product"."RetailerId" IS NULL)`)
-        .catch(console.log);
-}
-
 async function deleteRandomProduct(db) {
     const oProduct = await db.query(`SELECT * FROM "Product" ORDER BY random() LIMIT 1`);
-    await db.query(`DELETE FROM "Product"
-                    WHERE "Id" = ${oProduct.rows[0].Id}`)
-        .catch(console.log);
-
+    const oDeleteResult = await db.query(`DELETE FROM "Product"
+                    WHERE "Id" = ${oProduct.rows[0].Id}`).catch(console.log);
+    console.log(`Deleted ${oDeleteResult.rowCount} product(s)`);
 }
 
 module.exports = {
@@ -212,6 +213,5 @@ module.exports = {
     getProductsWithThumbnails,
     updateProductsStatuses,
     updateProductName,
-    deleteRetailersWithNoProducts,
     deleteRandomProduct
 }

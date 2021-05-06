@@ -20,10 +20,11 @@ async function executeQueries (db){
 async function exec (db){
   while(true){    
     //updateProductsStatuses(db);
-    updateProductName(db);
-    //addProducts(db);
-    si.dockerContainerStats('*',obj => console.log(JSON.stringify(obj, null, 2)));
-    await delay(10000)
+    //updateProductName(db);
+    addProducts(db);
+    //getProductsWithHierarchyCode(db);
+   // si.dockerContainerStats('*',obj => console.log(JSON.stringify(obj, null, 2)));
+    await delay(1000)
   }
 } 
 

@@ -7,12 +7,10 @@ async function addProducts (db, oModels){
     const aTypes =  await oModels.Type.find({}, {_id:0}).catch(console.log);
     const aClassificationItems =  await oModels.ClassificationItem.find({}).catch(console.log);
     const aClassifications = await oModels.Classification.find({}).catch(console.log);
-    console.log(aClassifications)
     const oProductData = prepareProductData(aStatuses, aCountries, aTypes, aClassificationItems, aClassifications);
     
-   const oProduct = await insertProduct(db, oProductData);
-    console.log(oProduct);
-    //Do something
+   const oProductResult = await insertProduct(db, oProductData);
+    console.log(`Inserted ${oProductResult.insertedCount} product`);
 }
 
 function prepareProductData(aStatuses, aCountries, aTypes, aClassificationItems, aClassifications){
@@ -21,7 +19,7 @@ function prepareProductData(aStatuses, aCountries, aTypes, aClassificationItems,
     const oType = aTypes[Math.floor(Math.random() * aTypes.length)];
     const oClassificationItem = aClassificationItems[Math.floor(Math.random() * aClassificationItems.length)];
     const oClassification = aClassifications.find(oItem => oClassificationItem._classificationId.equals(oItem._id));
-    //To ignore schema
+    
     oModifiedClassificationItem = {
         internalId: oClassificationItem.internalId,
         name: oClassificationItem.name,
@@ -66,71 +64,81 @@ async function insertProduct (db, oProductData){
             if(err){
                 reject(err);
             } else {
-                resolve(res.ops[0]);
+                resolve(res);
             }
         });
     });
 }
 
 async function getCountryProducts (db, oModels){
-    const aCountries = await oModels.Country.aggregate([{ $sample: { size: 1 } }]).catch(console.log);
-    const iCountryId = aCountries[0].internalId;
-    const aResult = await oModels.Product.find({"retailer.country.internalId": iCountryId}).catch(console.log);
-    console.log(aResult);
+    const aCountry = await oModels.Country.aggregate([{ $sample: { size: 1 } }]).catch(console.log);
+    const iCountryId = aCountry[0].internalId;
+    const iResultCount = await db.collection("Product").find({"retailer.country.internalId": iCountryId}).count();
+    console.log(`Get country products result: ${iResultCount} documents`);
 }
 
-async function getProductsWithHierarchyCode(oModels) {
+async function getProductsWithHierarchyCode(db, oModels) {
     const aClassificationItems = await oModels.ClassificationItem.aggregate([{ $sample: { size: 1 } }]).catch(console.log);
     const sHierarchyCode = '/' + aClassificationItems[0].hierarchyCode + '/i';
     console.log(sHierarchyCode);
-    const aResult = await oModels.Product.find({"classificationItems.hierarchyCode": sHierarchyCode}).catch(console.log);
-    console.log(aResult);
+
+    const iResultCount = await db.collection("Product").find({"classificationItems.hierarchyCode": sHierarchyCode}).count();
+    console.log(`Get products with HierarcyCode result: ${iResultCount} documents`); 
 }
 
-async function getUnclassifiedProducts(oModels) {
-    const aResult = await oModels.Product.find({"classificationItems": null }).catch(console.log);
-    console.log(aResult);
+async function getUnclassifiedProducts(db) {
+    const iResultCount = await db.collection("Product").find({"classificationItems": null }).count();
+    console.log(`Get unclassified products result: ${iResultCount} documents`);
 }
 
-async function getProductsWithThumbnails(oModels) {
-    const aResult = await oModels.Product.find({ "thumbnail": {$ne:null} }).catch(console.log);  
-    console.log(aResult);
+async function getProductsWithThumbnails(db) {
+    const iResultCount = await db.collection("Product").find({ "thumbnail": {$ne:null} }).count();  
+    console.log(`Get products with thumbnails result: ${iResultCount} documents`); 
 
 }
 
-async function updateProductsStatuses (oModels){
+async function updateProductsStatuses (db, oModels){
     const aTypeId = await oModels.Type.aggregate([{ $sample: { size: 1 } },  {$project:{internalId: 1}}]).catch(console.log);
     const aStatuses = await oModels.Status.find({}).catch(console.log);
     const oUpdateStatus = aStatuses[Math.floor(Math.random() * aStatuses.length)];
     const oConditionStatus = aStatuses.find(oStatus => oStatus.internalId !== oUpdateStatus.internalId);
-    console.log(oUpdateStatus);
-    console.log(oConditionStatus.internalId);
-    console.log(aTypeId[0].internalId)
-    const oResult = await oModels.Product.updateMany(
-        {"type.internalId": aTypeId[0].internalId,"status.internalId": oConditionStatus.internalId},
-        {$set: 
-            {"status": oUpdateStatus}
+
+    const oResult = await db.collection("Product").updateMany(
+        {
+            "type.internalId": aTypeId[0].internalId,
+            "status.internalId": oConditionStatus.internalId
+        },{
+            $set:{
+                "status": oUpdateStatus
+            }
         }).catch(console.log);
-    console.log(oResult);
+
+    console.log(`Updated status for ${oResult.modifiedCount} products`);
 }
 
-async function updateProductName (oModels){
-    const aProductId = await oModels.Product.find({}, {_id:1}).catch(console.log);
+async function updateProductName (db){
+    const aProductId = await db.collection("Product").find({}, {_id:1}).toArray();
     const sName = getRandomString(getRandomInteger(1,51));
-    const oResult = await oModels.Product.updateOne(
-        {"_id": aProductId[0]._id},
-        {$set: 
-            {"name": sName}
+
+    const oResult = await db.collection("Product").updateOne(
+        {
+            "_id": aProductId[0]._id
+        },{
+            $set: {
+                "name": sName
+            }
         });
-    console.log(oResult);
+
+    console.log(`Updated name for ${oResult.modifiedCount} product`);
 }
 
-async function deleteRandomProduct (oModels){
-    const aProducts = await oModels.Product.aggregate([{ $sample: { size: 1 } }]).catch(console.log);
-    const oProductId = new ObjectId(aProducts[0]._id);
-    await oModels.Product.deleteOne({ _id: { $eq: oProductId }});
-    const deletedPrCheck = await oModels.Product.find({_id: oProductId});
-    console.log(deletedPrCheck);
+async function deleteRandomProduct (db){
+    const aProduct = await db.collection("Product").aggregate([{ $sample: { size: 1 } }]).toArray();
+    console.log(aProduct);
+    const oProductId = new ObjectId(aProduct[0]._id);
+    const oDeleteResult = await db.collection("Product").deleteOne({ _id: { $eq: oProductId }});
+
+    console.log(`Deleted ${oDeleteResult.deletedCount} product`);
 }
 
 module.exports = {
