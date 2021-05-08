@@ -5,8 +5,8 @@ const {addRetailer,addProduct, getCountryProducts,
     const si = require('systeminformation');
 
 async function executeQueries (db, oModels){
-   /*  runQuery(oModels, addRetailer, 1000);
-    setTimeout(runQuery, 1000, oModels, addProduct, 1000); */
+    runQuery(oModels, addRetailer, 1000);
+    setTimeout(runQuery, 1000, oModels, addProduct, 1000);
     setTimeout(runQuery, 10000, oModels, getCountryProducts, 10000);
     setTimeout(runQuery, 12000, oModels, getProductsWithHierarchyCode, 10000);
     setTimeout(runQuery, 14000, oModels, getUnclassifiedProducts, 10000);
