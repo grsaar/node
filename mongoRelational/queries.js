@@ -9,7 +9,8 @@ async function addRetailer(oModels) {
     return {
         ExecutedQuery: 'Insert retailer',
         ResultCount: 1,
-        ElapseTime: aRetailerResult[2] - aRetailerResult[1] 
+        ElapseTime: aRetailerResult[2] - aRetailerResult[1],
+        TimeStamp: new Date(aRetailerResult[1]) 
     };
 }
 
@@ -70,7 +71,8 @@ async function addProduct(oModels) {
         {
             ExecutedQuery: 'Insert product',
             ResultCount: 1,
-            ElapseTime: aProductResult[2] - aProductResult[1] 
+            ElapseTime: aProductResult[2] - aProductResult[1],
+            TimeStamp: new Date(aProductResult[1])
         }
     ];
 
@@ -81,7 +83,8 @@ async function addProduct(oModels) {
         aResultsToReturn.push({
             ExecutedQuery: 'Insert product classification item',
             ResultCount: 1,
-            ElapseTime: aProductClassificationItemResult[2] - aProductClassificationItemResult[1] 
+            ElapseTime: aProductClassificationItemResult[2] - aProductClassificationItemResult[1],
+            TimeStamp: new Date(aProductClassificationItemResult[1])
         });
     }
 
@@ -93,7 +96,8 @@ async function addProduct(oModels) {
         aResultsToReturn.push({
             ExecutedQuery: 'Insert thumbnail',
             ResultCount: 1,
-            ElapseTime: aThumbnailResult[2] - aThumbnailResult[1] 
+            ElapseTime: aThumbnailResult[2] - aThumbnailResult[1],
+            TimeStamp: new Date(aThumbnailResult[1])
         });
 
         const oUpdateData = {
@@ -108,7 +112,8 @@ async function addProduct(oModels) {
         aResultsToReturn.push({
             ExecutedQuery: 'Update product',
             ResultCount: aUpdateResult[0].nModified,
-            ElapseTime: aUpdateResult[2] - aUpdateResult[1] 
+            ElapseTime: aUpdateResult[2] - aUpdateResult[1],
+            TimeStamp: new Date(aUpdateResult[1])
         });
     }
     return aResultsToReturn;
@@ -216,7 +221,8 @@ async function getCountryProducts(oModels) {
     return {
         ExecutedQuery: 'Get counrty products',
         ResultCount: iProductCount,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp) 
     };
 }
 
@@ -268,7 +274,8 @@ async function getProductsWithHierarchyCode(oModels) {
     return {
         ExecutedQuery: 'Get products with hierarchyCode',
         ResultCount: iProductCount,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp) 
     };
 }
 
@@ -300,7 +307,8 @@ async function getUnclassifiedProducts(oModels) {
     return {
         ExecutedQuery: 'Get unclassified products',
         ResultCount: aResult.length,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp) 
     };
 }
 
@@ -314,16 +322,29 @@ async function getProductsWithThumbnails(oModels) {
     return {
         ExecutedQuery: 'Get products with thumbnails',
         ResultCount: aProductsWithThumbnailsResult.length,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp) 
     };
 }
 
 async function getProductCount(oModels) {
-    return await oModels.Product.countDocuments({}).catch(console.log);
+    const iCountResult = await oModels.Product.countDocuments({}).catch(console.log);
+    return {
+        ExecutedQuery: 'Get product count',
+        ResultCount: iCountResult,
+        ElapseTime: '',
+        TimeStamp: new Date(Date.now()) 
+    }
 }
 
 async function getRetailerCount(oModels) {
-    return await oModels.Retailer.countDocuments({}).catch(console.log);
+    const iCountResult = await oModels.Retailer.countDocuments({}).catch(console.log);
+    return {
+        ExecutedQuery: 'Get retailer count',
+        ResultCount: iCountResult,
+        ElapseTime: '',
+        TimeStamp: new Date(Date.now()) 
+    }
 }
 
 async function updateProductsStatuses(oModels) {
@@ -344,7 +365,8 @@ async function updateProductsStatuses(oModels) {
     return {
         ExecutedQuery: 'Update product statuses',
         ResultCount: aUpdateResult[0].nModified,
-        ElapseTime: aUpdateResult[2] - aUpdateResult[1] 
+        ElapseTime: aUpdateResult[2] - aUpdateResult[1],
+        TimeStamp: new Date(aUpdateResult[1])
     };
 }
 
@@ -362,7 +384,8 @@ async function updateProductName(oModels) {
     return {
         ExecutedQuery: 'Update product name',
         ResultCount: aUpdateResult[0].nModified,
-        ElapseTime: aUpdateResult[2] - aUpdateResult[1] 
+        ElapseTime: aUpdateResult[2] - aUpdateResult[1],
+        TimeStamp: new Date(aUpdateResult[1])
     };
 }
 
@@ -379,7 +402,8 @@ async function deleteRandomProduct(oModels) {
     return {
         ExecutedQuery: 'Delete product',
         ResultCount: oDeleteResult.deletedCount,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp) 
     };
 
 }

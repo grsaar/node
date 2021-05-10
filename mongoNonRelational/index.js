@@ -3,57 +3,34 @@ const {addProduct, getCountryProducts,
     getProductsWithThumbnails, getProductCount, updateProductsStatuses, updateProductName,
     deleteRandomProduct} = require('./queries');
 const si = require('systeminformation');
-const fs = require('fs');
-const json2Csv = require('json2csv').parse;
+const {writeToFile, delay} = require('../utils');
 
 async function executeQueries (db, oModels){
-  /*  const oResult = await getProductCount(oModels);
-  //await writeToFile('../queryExecResult.txt', `Product count ${oResult.rows[0].count}`);
-  console.log(oResult); */
-    runQuery(db, oModels, addProduct, 1000);
-    setTimeout(runQuery, 1000, db, oModels, getCountryProducts, 10000); 
-    setTimeout(runQuery, 1200, db, oModels, getProductsWithHierarchyCode, 10000);
-    setTimeout(runQuery, 1400, db, oModels, getUnclassifiedProducts, 10000);
-    setTimeout(runQuery, 1600, db, oModels, getProductsWithThumbnails, 10000);
-    setTimeout(runQuery, 1800, db, oModels, updateProductsStatuses, 10000);
-    setTimeout(runQuery, 2000, db, oModels, updateProductName, 10000);
-    setTimeout(runQuery, 2000, db, oModels, deleteRandomProduct, 100000); 
+  const sQueryResultsFileName = '../mongoNonRelationalQueryResults.csv';
+  const sContainerStatsFileName = '../mongoNonRelationalContainerStats.csv';
+  
+  runQuery(db, addProduct, 1000, sQueryResultsFileName);
+    setTimeout(runQuery, 10000, db, oModels, getCountryProducts, 10000, sQueryResultsFileName);
+    setTimeout(runQuery, 12000, db, oModels, getProductsWithHierarchyCode, 10000, sQueryResultsFileName);
+    setTimeout(runQuery, 14000, db, oModels, getUnclassifiedProducts, 10000, sQueryResultsFileName);
+    setTimeout(runQuery, 16000, db, oModels, getProductsWithThumbnails, 10000, sQueryResultsFileName);
+    setTimeout(runQuery, 18000, db, oModels, updateProductsStatuses, 10000, sQueryResultsFileName);
+    setTimeout(runQuery, 20000, db, oModels, updateProductName, 10000, sQueryResultsFileName);
+    setTimeout(runQuery, 2000, db, oModels, deleteRandomProduct, 100000, sQueryResultsFileName);  
+
+    setTimeout(runQuery, 2000, db, oModels, getProductCount, 10000, sQueryResultsFileName);
+    
+    setTimeout(runQuery, 200, '*', null, si.dockerContainerStats, 10000, sContainerStatsFileName);
 }
 
-async function runQuery (db, oModels, fRunFunction, iDelay){
+async function runQuery (db, oModels, fRunFunction, iDelay, sFileName){
     while(true){
       const oDataToWrite = await fRunFunction(db, oModels);
-      writeToFile('../mongoNonRelationalQueryResults.csv', oDataToWrite);
+      writeToFile(sFileName, oDataToWrite);
       //si.dockerContainerStats('*',obj => console.log(JSON.stringify(obj, null, 2)));
       await delay(iDelay)
     }
   } 
-  
-   async function delay(iMillis) {
-      return new Promise(resolve => setTimeout(resolve, iMillis));
-  }
-
-  async function writeToFile(sFilePath, oData){
-    fs.stat(sFilePath, function(err) {
-      if(!err){
-        //if file exists, append data
-            const csv = json2Csv(oData, {header: false}) + '\r\n';
-            fs.appendFile(sFilePath, csv, function (err){
-              if(err){
-                console.log(err);
-              }
-            });
-          } else {
-            //create file and add headers
-            const csv = json2Csv(oData, {header: true}) + '\r\n';
-            fs.writeFile(sFilePath, csv, function (err) {
-              if(err) {
-                console.log(err);
-              }
-            });
-          }
-    });
-  }
 
 module.exports = {
     executeQueries

@@ -5,8 +5,8 @@ const { response } = require('express');
 const Schema = mongoose.Schema;
 const {importDataToMongoFromCsv} = require('./import/importData');
 const {updateHierarchyCodesMongo} = require('./import/classificationItemHierarchyCode');
-const {executeQueries} = require('./mongoRelational/index');
-//const {executeQueries} = require('./mongoNonRelational/index');
+//const {executeQueries} = require('./mongoRelational/index');
+const {executeQueries} = require('./mongoNonRelational/index');
 const defineModels = require('./mongoRelational/models');
 
  async function connectDatabase() {

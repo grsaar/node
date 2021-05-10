@@ -17,7 +17,8 @@ async function addProduct (db){
     return {
         ExecutedQuery: 'Insert product',
         ResultCount: aProductResult[0].rowCount,
-        ElapseTime: aProductResult[2] - aProductResult[1] 
+        ElapseTime: aProductResult[2] - aProductResult[1],
+        TimeStamp: new Date(aProductResult[1]) 
     };
 }
 
@@ -84,7 +85,8 @@ async function getCountryProducts(db){
     return {
         ExecutedQuery: 'Get counrty products',
         ResultCount: oProductResult.rowCount,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp) 
     };
 }
 
@@ -103,7 +105,8 @@ async function getProductsWithHierarchyCode(db){
     return {
         ExecutedQuery: 'Get products with hierarchyCode',
         ResultCount: oProductResult.rowCount,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp)
     };                
 
 }
@@ -119,7 +122,8 @@ async function getUnclassifiedProducts (db){
     return {
         ExecutedQuery: 'Get unclassified products',
         ResultCount: oUnclassifiedProductsResult.rowCount,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp)
     };                                                     
 }
 
@@ -133,12 +137,19 @@ async function getProductsWithThumbnails (db){
     return {
         ExecutedQuery: 'Get products with thumbnails',
         ResultCount: oProductsWithThumbnailsResult.rowCount,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp)
     };                                                                                                                                                           
 }
 
 async function getProductCount(db) {
-    return await db.query(`SELECT COUNT(*) FROM "Product"`).catch(console.log);
+    const oCountResult =  await db.query(`SELECT COUNT(*) FROM "Product"`).catch(console.log);
+    return {
+        ExecutedQuery: 'Get product count',
+        ResultCount: oCountResult.rows[0].count,
+        ElapseTime: '',
+        TimeStamp: new Date(Date.now()) 
+    }
 }
 
 async function updateProductsStatuses (db){
@@ -158,7 +169,8 @@ async function updateProductsStatuses (db){
     return {
         ExecutedQuery: 'Update product statuses',
         ResultCount: oUpdateResult.rowCount,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp) 
     };                                 
 }
 
@@ -176,7 +188,8 @@ async function updateProductName(db){
     return {
         ExecutedQuery: 'Update product name',
         ResultCount: oUpdateResult.rowCount,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp) 
     };
 }
 
@@ -191,7 +204,8 @@ async function deleteRandomProduct (db){
     return {
         ExecutedQuery: 'Delete product',
         ResultCount: oDeleteResult.rowCount,
-        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
+        TimeStamp: new Date(sQueryStartTimestamp) 
     };                                
 }
 
