@@ -10,9 +10,15 @@ async function addProduct (db){
     const oClassificationResult =  await db.query(`SELECT "InternalId", "Name" FROM "Classification"`).catch(console.log);
     
     const aProductData = prepareProductData(oStatusResult.rows, oCountriesResult.rows, oTypeResult.rows, oClassificationItemsResult.rows, oClassificationResult.rows);
-   // console.log(aProductData);
-    const iInsertedRows = await insertProduct(db, aProductData);
-      console.log(`Inserted ${iInsertedRows} product`);
+   
+    const aProductResult = await insertProduct(db, aProductData);
+    console.log(`Inserted ${aProductResult[0].rowCount} product`);
+    console.log(`Elapse time ${aProductResult[2] - aProductResult[1]}`);
+    return {
+        ExecutedQuery: 'Insert product',
+        ResultCount: aProductResult[0].rowCount,
+        ElapseTime: aProductResult[2] - aProductResult[1] 
+    };
 }
 
 function prepareProductData (aStatuses, aCountries, aTypes, aClassificationItems, aClassifications){
@@ -51,48 +57,88 @@ function prepareProductData (aStatuses, aCountries, aTypes, aClassificationItems
 }
 
 async function insertProduct (db, aProductData){
+    const sQueryStartTimestamp = Date.now();
+
    return new Promise ((resolve, reject) => {
         db.query(`INSERT INTO "Product"("Data")
                  VALUES($1) returning "Data"`, aProductData, (err, res) => {
             if(err){
                 reject(err);
             } else {
-                resolve(res.rowCount);
+                resolve([res, sQueryStartTimestamp, Date.now()]);
             }
         });
     });
 }
 
 async function getCountryProducts(db){
-    const oCountryResult = await db.query(`SELECT * FROM "Country" ORDER BY random() LIMIT 1`);
+    const oCountryResult = await db.query(`SELECT "InternalId" FROM "Country" ORDER BY random() LIMIT 1`);
+    const sQueryStartTimestamp = Date.now();
+
     const oProductResult =  await db.query(`SELECT * FROM "Product"
-    WHERE ("Data" -> 'retailer' -> 'country' ->> 'InternalId')::int = ${oCountryResult.rows[0].InternalId}`).catch(console.log);
+                                            WHERE ("Data" -> 'retailer' -> 'country' ->> 'InternalId')::int = ${oCountryResult.rows[0].InternalId}`)
+                                            .catch(console.log);
+    const sQueryEndTimestamp = Date.now();
     console.log(`Get country products result: ${oProductResult.rowCount} rows`);
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+    return {
+        ExecutedQuery: 'Get counrty products',
+        ResultCount: oProductResult.rowCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };
 }
 
 async function getProductsWithHierarchyCode(db){    
-    const oClassificationItemResult = await db.query(`SELECT * FROM "Classification Item" ORDER BY random() LIMIT 1`);
+    const oClassificationItemResult = await db.query(`SELECT "HierarchyCode" FROM "Classification Item" ORDER BY random() LIMIT 1`);
     const sHierarchyCode = oClassificationItemResult.rows[0].HierarchyCode + '%';
-    console.log(sHierarchyCode);
-    const oProductResult = await db.query(`SELECT "Id" FROM "Product", 
+    const sQueryStartTimestamp = Date.now();
+    
+    const oProductResult = await db.query(`SELECT * FROM "Product", 
                                         jsonb_array_elements(("Data"::jsonb)->'classificationItems') AS classificationItems(ClassificationItem)
                                         WHERE  (classificationItems.ClassificationItem ->> 'HierarchyCode') LIKE '${sHierarchyCode}'`)
-                                                                            .catch(console.log);                                                                     
-    console.log(`Get products with HierarcyCode result: ${oProductResult.rowCount} rows`);                                   
+                                                                            .catch(console.log);   
+    const sQueryEndTimestamp = Date.now();                                                                                                                        
+    console.log(`Get products with HierarcyCode result: ${oProductResult.rowCount} rows`);                    
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+    return {
+        ExecutedQuery: 'Get products with hierarchyCode',
+        ResultCount: oProductResult.rowCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };                
 
 }
 
 async function getUnclassifiedProducts (db){
+    const sQueryStartTimestamp = Date.now();
     const oUnclassifiedProductsResult = await db.query(`SELECT * FROM "Product"
                                                         WHERE jsonb_array_length(("Product"."Data"::jsonb)->'classificationItems') = 0`)
                                                         .catch(console.log);
-    console.log(`Get unclassified products result: ${oUnclassifiedProductsResult.rowCount} rows`);                                                        
+    const sQueryEndTimestamp = Date.now();    
+    console.log(`Get unclassified products result: ${oUnclassifiedProductsResult.rowCount} rows`); 
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);  
+    return {
+        ExecutedQuery: 'Get unclassified products',
+        ResultCount: oUnclassifiedProductsResult.rowCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };                                                     
 }
 
 async function getProductsWithThumbnails (db){
+    const sQueryStartTimestamp = Date.now();
     const oProductsWithThumbnailsResult = await db.query(`SELECT * FROM "Product"
                                                           WHERE "Product"."Data"->'thumbnail' is not null`).catch(console.log);
-    console.log(`Get products with thumbnails result: ${oProductsWithThumbnailsResult.rowCount} rows`);                                                                                                                                                            
+    const sQueryEndTimestamp = Date.now(); 
+    console.log(`Get products with thumbnails result: ${oProductsWithThumbnailsResult.rowCount} rows`);  
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`); 
+    return {
+        ExecutedQuery: 'Get products with thumbnails',
+        ResultCount: oProductsWithThumbnailsResult.rowCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };                                                                                                                                                           
+}
+
+async function getProductCount(db) {
+    return await db.query(`SELECT COUNT(*) FROM "Product"`).catch(console.log);
 }
 
 async function updateProductsStatuses (db){
@@ -100,28 +146,53 @@ async function updateProductsStatuses (db){
     const aStatusResult = await db.query(`SELECT * FROM "Status"`).catch(console.log);
     const oUpdateStatus = aStatusResult.rows[Math.floor(Math.random() * aStatusResult.rows.length)];
     const iConditionStatusId = aStatusResult.rows.find(oStatus => oStatus.InternalId !== oUpdateStatus.InternalId).InternalId;
+    const sQueryStartTimestamp = Date.now();
+
     const oUpdateResult = await db.query(`UPDATE "Product"
                                     SET "Data" = jsonb_set("Data"::jsonb, '{status}', '{"InternalId": ${oUpdateStatus.InternalId}, "Name": "${oUpdateStatus.Name}"}')
                                     WHERE ("Data" -> 'status' ->> 'InternalId')::int = ${iConditionStatusId}
                                     AND ("Data" -> 'type' ->> 'InternalId')::int = ${aTypeResult.rows[0].InternalId}`).catch(console.log);
-    console.log(`Updated status for ${oUpdateResult.rowCount} products`);                                
+    const sQueryEndTimestamp = Date.now();
+    console.log(`Updated status for ${oUpdateResult.rowCount} products`); 
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);  
+    return {
+        ExecutedQuery: 'Update product statuses',
+        ResultCount: oUpdateResult.rowCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };                                 
 }
 
 async function updateProductName(db){
     const oProductResult = await db.query(`SELECT "Id" FROM "Product" ORDER BY random() LIMIT 1`).catch(console.log);
     const sName = getRandomString(getRandomInteger(1, 51));
+    const sQueryStartTimestamp = Date.now();
+
      const oUpdateResult = await db.query(`UPDATE "Product"
                                     SET "Data" = jsonb_set("Data"::jsonb, '{name}', '"${sName}"')
                                     WHERE "Product"."Id" = ${oProductResult.rows[0].Id}`).catch(console.log);
+    const sQueryEndTimestamp = Date.now(); 
     console.log(`Updated name for ${oUpdateResult.rowCount} product`);                                  
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`); 
+    return {
+        ExecutedQuery: 'Update product name',
+        ResultCount: oUpdateResult.rowCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };
 }
 
 async function deleteRandomProduct (db){
+    const sQueryStartTimestamp = Date.now();
     const oProduct = await db.query(`SELECT * FROM "Product" ORDER BY random() LIMIT 1`);
     const oDeleteResult = await db.query(`DELETE FROM "Product"
-                                        WHERE "Id" = ${oProduct.rows[0].Id}`)
-                                        .catch(console.log);
-    console.log(`Deleted ${oDeleteResult.rowCount} product`);                                 
+                                        WHERE "Id" = ${oProduct.rows[0].Id}`).catch(console.log);
+    const sQueryEndTimestamp = Date.now();
+    console.log(`Deleted ${oDeleteResult.rowCount} product`);
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`); 
+    return {
+        ExecutedQuery: 'Delete product',
+        ResultCount: oDeleteResult.rowCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };                                
 }
 
 module.exports = {
@@ -130,6 +201,7 @@ module.exports = {
     getProductsWithHierarchyCode,
     getUnclassifiedProducts,
     getProductsWithThumbnails,
+    getProductCount,
     updateProductsStatuses,
     updateProductName,
     deleteRandomProduct

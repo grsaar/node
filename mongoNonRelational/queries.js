@@ -9,8 +9,14 @@ async function addProduct (db, oModels){
     const aClassifications = await oModels.Classification.find({}).catch(console.log);
     const oProductData = prepareProductData(aStatuses, aCountries, aTypes, aClassificationItems, aClassifications);
     
-   const oProductResult = await insertProduct(db, oProductData);
-    console.log(`Inserted ${oProductResult.insertedCount} product`);
+   const aProductResult = await insertProduct(db, oProductData);   
+    const sString = `Inserted ${aProductResult[0].insertedCount} product, `.concat(`elapse time ${aProductResult[2] - aProductResult[1]} ms`);
+    console.log(sString);
+    return {
+        ExecutedQuery: 'Insert product',
+        ResultCount: aProductResult[0].insertedCount,
+        ElapseTime: aProductResult[2] - aProductResult[1] 
+    };
 }
 
 function prepareProductData(aStatuses, aCountries, aTypes, aClassificationItems, aClassifications){
@@ -58,43 +64,85 @@ function prepareProductData(aStatuses, aCountries, aTypes, aClassificationItems,
 }
 
 
-async function insertProduct (db, oProductData){  
+async function insertProduct (db, oProductData){
+    const sQueryStartTimestamp = Date.now();
+
   return new Promise ((resolve, reject) => {
     db.collection("Product").insertOne(oProductData, (err, res) => {
             if(err){
                 reject(err);
             } else {
-                resolve(res);
+                resolve([res, sQueryStartTimestamp, Date.now()]);
             }
         });
     });
 }
 
 async function getCountryProducts (db, oModels){
-    const aCountry = await oModels.Country.aggregate([{ $sample: { size: 1 } }]).catch(console.log);
+    const aCountry = await oModels.Country.aggregate([{ $sample: { size: 1 } }, { $project: { internalId: 1 } }]).catch(console.log);
     const iCountryId = aCountry[0].internalId;
-    const iResultCount = await db.collection("Product").find({"retailer.country.internalId": iCountryId}).count();
+    const sQueryStartTimestamp = Date.now();
+
+    const iResultCount = await db.collection("Product").find({"retailer.country.internalId": iCountryId}).count().catch(console.log);
+   
+    const sQueryEndTimestamp = Date.now();
     console.log(`Get country products result: ${iResultCount} documents`);
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+    return {
+        ExecutedQuery: 'Get country products',
+        ResultCount: iResultCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };
 }
 
 async function getProductsWithHierarchyCode(db, oModels) {
-    const aClassificationItems = await oModels.ClassificationItem.aggregate([{ $sample: { size: 1 } }]).catch(console.log);
+    const aClassificationItems = await oModels.ClassificationItem.aggregate([{ $sample: { size: 1 } }, { $project: {hierarchyCode: 1 } }]).catch(console.log);
     const sHierarchyCode = '/' + aClassificationItems[0].hierarchyCode + '/i';
-    console.log(sHierarchyCode);
+    const sQueryStartTimestamp = Date.now();
 
-    const iResultCount = await db.collection("Product").find({"classificationItems.hierarchyCode": sHierarchyCode}).count();
+    const iResultCount = await db.collection("Product").find({"classificationItems.hierarchyCode": sHierarchyCode}).count().catch(console.log);
+    
+    const sQueryEndTimestamp = Date.now();
     console.log(`Get products with HierarcyCode result: ${iResultCount} documents`); 
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+    return {
+        ExecutedQuery: 'Get products with hierarchyCode',
+        ResultCount: iResultCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };
 }
 
 async function getUnclassifiedProducts(db) {
-    const iResultCount = await db.collection("Product").find({"classificationItems": null }).count();
+    const sQueryStartTimestamp = Date.now();
+    const iResultCount = await db.collection("Product").find({"classificationItems": null }).count().catch(console.log);
+
+    const sQueryEndTimestamp = Date.now();
     console.log(`Get unclassified products result: ${iResultCount} documents`);
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+    return {
+        ExecutedQuery: 'Get unclassified products',
+        ResultCount: iResultCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };
 }
 
 async function getProductsWithThumbnails(db) {
-    const iResultCount = await db.collection("Product").find({ "thumbnail": {$ne:null} }).count();  
-    console.log(`Get products with thumbnails result: ${iResultCount} documents`); 
+    const sQueryStartTimestamp = Date.now();
+    const iResultCount = await db.collection("Product").find({ "thumbnail": {$ne:null} }).count().catch(console.log);
 
+    const sQueryEndTimestamp = Date.now();
+    console.log(`Get products with thumbnails result: ${iResultCount} documents`); 
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+    return {
+        ExecutedQuery: 'Get products with thumbnails',
+        ResultCount: iResultCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };
+
+}
+
+async function getProductCount(oModels) {
+    return await oModels.Product.countDocuments({}).catch(console.log);
 }
 
 async function updateProductsStatuses (db, oModels){
@@ -102,6 +150,7 @@ async function updateProductsStatuses (db, oModels){
     const aStatuses = await oModels.Status.find({}).catch(console.log);
     const oUpdateStatus = aStatuses[Math.floor(Math.random() * aStatuses.length)];
     const oConditionStatus = aStatuses.find(oStatus => oStatus.internalId !== oUpdateStatus.internalId);
+    const sQueryStartTimestamp = Date.now();
 
     const oResult = await db.collection("Product").updateMany(
         {
@@ -113,12 +162,20 @@ async function updateProductsStatuses (db, oModels){
             }
         }).catch(console.log);
 
+    const sQueryEndTimestamp = Date.now();    
     console.log(`Updated status for ${oResult.modifiedCount} products`);
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+    return {
+        ExecutedQuery: 'Update product statuses',
+        ResultCount: oResult.modifiedCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };
 }
 
 async function updateProductName (db){
     const aProductId = await db.collection("Product").find({}, {_id:1}).toArray();
     const sName = getRandomString(getRandomInteger(1,51));
+    const sQueryStartTimestamp = Date.now();
 
     const oResult = await db.collection("Product").updateOne(
         {
@@ -129,15 +186,31 @@ async function updateProductName (db){
             }
         });
 
+    const sQueryEndTimestamp = Date.now();  
     console.log(`Updated name for ${oResult.modifiedCount} product`);
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+    return {
+        ExecutedQuery: 'Update product name',
+        ResultCount: oResult.modifiedCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };
 }
 
 async function deleteRandomProduct (db){
-    const aProduct = await db.collection("Product").aggregate([{ $sample: { size: 1 } }]).toArray();
+    const aProduct = await db.collection("Product").aggregate([{ $sample: { size: 1 } }, { $project: { _id: 1 } }]).toArray();
     const oProductId = new ObjectId(aProduct[0]._id);
+    const sQueryStartTimestamp = Date.now();
+
     const oDeleteResult = await db.collection("Product").deleteOne({ _id: { $eq: oProductId }});
 
+    const sQueryEndTimestamp = Date.now();
     console.log(`Deleted ${oDeleteResult.deletedCount} product`);
+    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+    return {
+        ExecutedQuery: 'Delete product',
+        ResultCount: oDeleteResult.deletedCount,
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp 
+    };
 }
 
 module.exports = {
@@ -146,6 +219,7 @@ module.exports = {
     getProductsWithHierarchyCode,
     getUnclassifiedProducts,
     getProductsWithThumbnails,
+    getProductCount,
     updateProductsStatuses,
     updateProductName,
     deleteRandomProduct

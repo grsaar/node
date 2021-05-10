@@ -4,11 +4,11 @@ const fs = require('fs');
 const fastcsv = require('fast-csv');
 const si = require('systeminformation');
 const { Client } = require('pg');
-const connectionString = 'postgresql://postgres:parool2@127.0.0.1:8080';
+const connectionString = 'postgresql://postgres:parool@127.0.0.1:8080';
 const {importDataToPostgresFromCsv} = require('./import/importData');
 const {updateHierarchyCodesPg} = require('./import/classificationItemHierarchyCode');
-//const {executeQueries} = require('./postgresRelational/index');
-const {executeQueries} = require('./postgresNonRelational/index');
+const {executeQueries} = require('./postgresRelational/index');
+//const {executeQueries} = require('./postgresNonRelational/index');
 
 async function connectDatabase() {
   return new Promise ((resolve, reject) => {
