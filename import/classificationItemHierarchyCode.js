@@ -1,14 +1,14 @@
 const {prepareTree} = require('../utils');
 
 async function updateHierarchyCodesPg (db) {
-    const aClassificationItems = await db.query(`SELECT "InternalId", "HierarchyCode", "ParentId" FROM "Classification Item"`).catch(console.log);
+    const aClassificationItems = await db.query(`SELECT "InternalId", "HierarchyCode", "ParentId" FROM "ClassificationItem"`).catch(console.log);
     const aItemsToUpdate = addHierarchyCodes(aClassificationItems.rows, 'InternalId', 'ParentId', 'HierarchyCode');
 
     //ERROR near WHERE
-    //await db.query(`UPDATE "Classification Item" SET "HierarchyCode" = ? WHERE "InternalId" = ?`, aItemsToUpdate).catch(console.log);
+    //await db.query(`UPDATE "ClassificationItem" SET "HierarchyCode" = ? WHERE "InternalId" = ?`, aItemsToUpdate).catch(console.log);
 
    await aItemsToUpdate.forEach(row => {
-        db.query(`UPDATE "Classification Item" SET "HierarchyCode" = $1 WHERE "InternalId" = $2`, row)
+        db.query(`UPDATE "ClassificationItem" SET "HierarchyCode" = $1 WHERE "InternalId" = $2`, row)
         .catch(console.log);
       }); 
 }

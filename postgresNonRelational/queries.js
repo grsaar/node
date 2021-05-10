@@ -6,7 +6,7 @@ async function addProduct (db){
     const oStatusResult =  await db.query(`SELECT "InternalId", "Name" FROM "Status"`).catch(console.log);
     const oCountriesResult =  await db.query(`SELECT "InternalId", "Name" FROM "Country"`).catch(console.log);
     const oTypeResult =  await db.query(`SELECT "InternalId", "Name" FROM "Type"`).catch(console.log);
-    const oClassificationItemsResult =  await db.query(`SELECT "InternalId", "Name", "HierarchyCode", "ClassificationId", "ParentId" FROM "Classification Item"`).catch(console.log);
+    const oClassificationItemsResult =  await db.query(`SELECT "InternalId", "Name", "HierarchyCode", "ClassificationId", "ParentId" FROM "ClassificationItem"`).catch(console.log);
     const oClassificationResult =  await db.query(`SELECT "InternalId", "Name" FROM "Classification"`).catch(console.log);
     
     const aProductData = prepareProductData(oStatusResult.rows, oCountriesResult.rows, oTypeResult.rows, oClassificationItemsResult.rows, oClassificationResult.rows);
@@ -91,7 +91,7 @@ async function getCountryProducts(db){
 }
 
 async function getProductsWithHierarchyCode(db){    
-    const oClassificationItemResult = await db.query(`SELECT "HierarchyCode" FROM "Classification Item" ORDER BY random() LIMIT 1`);
+    const oClassificationItemResult = await db.query(`SELECT "HierarchyCode" FROM "ClassificationItem" ORDER BY random() LIMIT 1`);
     const sHierarchyCode = oClassificationItemResult.rows[0].HierarchyCode + '%';
     const sQueryStartTimestamp = Date.now();
     

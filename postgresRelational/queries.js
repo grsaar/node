@@ -75,7 +75,7 @@ async function addProduct(db) {
     //Generate random boolean to decide if classificationItem will be added or not
     if (getRandomInteger(0, 2)) {
         const aProductClassificationItemResult = await insertProductClassificationItem(db, oProduct.rows[0]);
-        console.log(`Inserted ${aProductClassificationItemResult[0].rowCount} Product Classification Item`);
+        console.log(`Inserted ${aProductClassificationItemResult[0].rowCount} ProductClassificationItem`);
         console.log(`Elapse time ${aProductClassificationItemResult[2] - aProductClassificationItemResult[1]}`);
         aResultsToReturn.push({
             ExecutedQuery: 'Insert product classification item',
@@ -138,14 +138,14 @@ async function insertProduct(db, aStatusIds, aRetailerIds, aTypeIds) {
 }
 
 async function insertProductClassificationItem(db, oProduct) {
-    const oClassificationItemResult = await db.query(`SELECT * FROM "Classification Item"`).catch(console.log);
+    const oClassificationItemResult = await db.query(`SELECT * FROM "ClassificationItem"`).catch(console.log);
     const aClasItemIds = oClassificationItemResult.rows.map(oClasItem => oClasItem.Id);
     const iClassificationItemId = aClasItemIds[Math.floor(Math.random() * aClasItemIds.length)];
     const aProductClasItemData = [oProduct.Id, iClassificationItemId];
     const sQueryStartTimestamp = Date.now();
 
     return new Promise((resolve, reject) => {
-        db.query(`INSERT INTO "Product Classification Item"("ProductId", "ClassificationItemId") VALUES($1,$2)`, aProductClasItemData, (err, res) => {
+        db.query(`INSERT INTO "ProductClassificationItem"("ProductId", "ClassificationItemId") VALUES($1,$2)`, aProductClasItemData, (err, res) => {
             if (err) {
                 reject(err);
             } else {
@@ -214,13 +214,13 @@ async function getCountryProducts(db) {
 
 
 async function getProductsWithHierarchyCode(db) {
-    const oClassificationItem = await db.query(`SELECT "HierarchyCode" FROM "Classification Item" ORDER BY random() LIMIT 1`);
+    const oClassificationItem = await db.query(`SELECT "HierarchyCode" FROM "ClassificationItem" ORDER BY random() LIMIT 1`);
     const sHierarchyCode = oClassificationItem.rows[0].HierarchyCode + '%';
     const sQueryStartTimestamp = Date.now();
-    const oProductResult = await db.query(`SELECT * FROM "Classification Item" INNER JOIN ("Product Classification Item" 
-                                            INNER JOIN "Product" ON "Product"."Id" = "Product Classification Item"."ProductId") 
-                                            ON "Product Classification Item"."ClassificationItemId" = "Classification Item"."Id"
-                                            WHERE "Classification Item"."HierarchyCode" LIKE '${sHierarchyCode}'`).catch(console.log);                                            
+    const oProductResult = await db.query(`SELECT * FROM "ClassificationItem" INNER JOIN ("ProductClassificationItem" 
+                                            INNER JOIN "Product" ON "Product"."Id" = "ProductClassificationItem"."ProductId") 
+                                            ON "ProductClassificationItem"."ClassificationItemId" = "ClassificationItem"."Id"
+                                            WHERE "ClassificationItem"."HierarchyCode" LIKE '${sHierarchyCode}'`).catch(console.log);                                            
     const sQueryEndTimestamp = Date.now();
     console.log(`Get products with HierarcyCode result: ${oProductResult.rowCount} rows`);
     console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);    
@@ -236,9 +236,9 @@ async function getProductsWithHierarchyCode(db) {
 async function getUnclassifiedProducts(db) {
     const sQueryStartTimestamp = Date.now();
     const oUnclassifiedProductsResult = await db.query(`SELECT * FROM "Product"
-                                                        LEFT JOIN "Product Classification Item"
-                                                        ON "Product"."Id" = "Product Classification Item"."ProductId"
-                                                        WHERE "Product Classification Item"."ProductId" IS NULL`).catch(console.log);
+                                                        LEFT JOIN "ProductClassificationItem"
+                                                        ON "Product"."Id" = "ProductClassificationItem"."ProductId"
+                                                        WHERE "ProductClassificationItem"."ProductId" IS NULL`).catch(console.log);
 
     const sQueryEndTimestamp = Date.now();                                                    
     console.log(`Get unclassified products result: ${oUnclassifiedProductsResult.rows.length} rows`);
