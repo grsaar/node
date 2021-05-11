@@ -143,11 +143,13 @@ async function getProductsWithThumbnails (db){
 }
 
 async function getProductCount(db) {
+    const sQueryStartTimestamp = Date.now();
     const oCountResult =  await db.query(`SELECT COUNT(*) FROM "Product"`).catch(console.log);
+    const sQueryEndTimestamp = Date.now(); 
     return {
         ExecutedQuery: 'Get product count',
         ResultCount: oCountResult.rows[0].count,
-        ElapseTime: '',
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
         TimeStamp: new Date(Date.now()) 
     }
 }
