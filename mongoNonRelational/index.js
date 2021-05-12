@@ -6,8 +6,8 @@ const si = require('systeminformation');
 const {writeToFile, delay} = require('../utils');
 
 async function executeQueries (db, oModels, sStartTime){
-  const sQueryResultsFileName = '../mongoNonRelationalQueryResults_vol2.csv';
-  const sContainerStatsFileName = '../mongoNonRelationalContainerStats_vol2.csv';
+  const sQueryResultsFileName = '../mongoNonRelationalQueryResults_vol3.csv';
+  const sContainerStatsFileName = '../mongoNonRelationalContainerStats_vol3.csv';
   
   runQuery(db, oModels, addProduct, 100, sQueryResultsFileName, sStartTime);
     setTimeout(runQuery, 2000, db, oModels, getCountryProducts, 2000, sQueryResultsFileName, sStartTime);
@@ -24,9 +24,10 @@ async function executeQueries (db, oModels, sStartTime){
 }
 
 async function runQuery (db, oModels, fRunFunction, iDelay, sFileName, sStartTime){
-    while(Date.now() < sStartTime + 7020000){
-      const oDataToWrite = await fRunFunction(db, oModels);
-      writeToFile(sFileName, oDataToWrite);
+    while(Date.now() < sStartTime + 7200000){
+      fRunFunction(db, oModels).then(oDataToWrite => {
+        writeToFile(sFileName, oDataToWrite);
+      });
       //si.dockerContainerStats('*',obj => console.log(JSON.stringify(obj, null, 2)));
       await delay(iDelay)
     }

@@ -6,8 +6,8 @@ const si = require('systeminformation');
 const {writeToFile, delay} = require('../utils');
 
 async function executeQueries (db, sStartTime){
-  const sQueryResultsFileName = '../postgresNonRelationalQueryResults_vol2.csv';
-  const sContainerStatsFileName = '../postgresNonRelationalContainerStats_vol2.csv';
+  const sQueryResultsFileName = '../postgresNonRelationalQueryResults_vol3.csv';
+  const sContainerStatsFileName = '../postgresNonRelationalContainerStats_vol3.csv';
   
     runQuery(db, addProduct, 100, sQueryResultsFileName, sStartTime);
     setTimeout(runQuery, 2000, db, getCountryProducts, 2000, sQueryResultsFileName, sStartTime);
@@ -24,9 +24,10 @@ async function executeQueries (db, sStartTime){
 }
 
 async function runQuery (db, fRunFunction, iDelay, sFileName, sStartTime){
-  while(Date.now() < sStartTime + 7020000){    
-    const oDataToWrite = await fRunFunction(db);
-    writeToFile(sFileName, oDataToWrite);
+  while(Date.now() < sStartTime + 7200000){    
+    fRunFunction(db).then(oDataToWrite => {
+      writeToFile(sFileName, oDataToWrite);
+    });
     //si.dockerContainerStats('*',obj => console.log(JSON.stringify(obj, null, 2)));
     await delay(iDelay)
   }

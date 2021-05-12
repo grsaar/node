@@ -7,11 +7,11 @@ const si = require('systeminformation');
 const {writeToFile, delay} = require('../utils');
 
 async function executeQueries (db, oModels, sStartTime){
-  const sQueryResultsFileName = '../mongoRelationalQueryResults_vol2.csv';
-  const sContainerStatsFileName = '../mongoRelationalContainerStats_vol2.csv';
+  const sQueryResultsFileName = '../mongoRelationalQueryResults_vol3.csv';
+  const sContainerStatsFileName = '../mongoRelationalContainerStats_vol3.csv';
 
-    runQuery(oModels, addRetailer, 100, sQueryResultsFileName, sStartTime);
-    setTimeout(runQuery, 200, oModels, addProduct, 100, sQueryResultsFileName, sStartTime);
+    runQuery(oModels, addProduct, 100, sQueryResultsFileName, sStartTime);
+    //setTimeout(runQuery, 200, oModels, addProduct, 100, sQueryResultsFileName, sStartTime);
     setTimeout(runQuery, 2000, oModels, getCountryProducts, 2000, sQueryResultsFileName, sStartTime);
     setTimeout(runQuery, 2400, oModels, getProductsWithHierarchyCode, 2000, sQueryResultsFileName, sStartTime);
     setTimeout(runQuery, 2800, oModels, getUnclassifiedProducts, 2000, sQueryResultsFileName, sStartTime);
@@ -27,9 +27,10 @@ async function executeQueries (db, oModels, sStartTime){
 }
 
 async function runQuery (oModels, fRunFunction, iDelay, sFileName, sStartTime){
-    while(Date.now() < sStartTime + 7020000){
-      const oDataToWrite = await fRunFunction(oModels);
-      writeToFile(sFileName, oDataToWrite);
+    while(Date.now() < sStartTime + 7200000){
+      fRunFunction(oModels).then(oDataToWrite => {
+        writeToFile(sFileName, oDataToWrite);
+      });
       //si.dockerContainerStats('*',obj => console.log(JSON.stringify(obj, null, 2)));
       await delay(iDelay)
     }

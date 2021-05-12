@@ -11,7 +11,8 @@ async function addRetailer(db) {
         ExecutedQuery: 'Insert retailer',
         ResultCount: aRetailerResult[0].rowCount,
         ElapseTime: aRetailerResult[2] - aRetailerResult[1],
-        TimeStamp: new Date(aRetailerResult[1])
+        TimeStamp: new Date(aRetailerResult[1]),
+        RetailerId: aRetailerResult[0].rows[0].Id
     };
 }
 
@@ -24,7 +25,7 @@ async function insertRetailer(db, aCountryIds) {
     const sQueryStartTimestamp = Date.now();
 
     return new Promise((resolve, reject) => {
-        db.query(`INSERT INTO "Retailer"("Name", "TaxId", "Email", "CountryId") VALUES($1,$2,$3,$4)`, aRetailerData, (err, res) => {
+        db.query(`INSERT INTO "Retailer"("Name", "TaxId", "Email", "CountryId") VALUES($1,$2,$3,$4) returning "Id"`, aRetailerData, (err, res) => {
             if (err) {
                 reject(err);
             } else {
@@ -55,22 +56,36 @@ async function addProduct(db) {
     const oStatusResult = await db.query(`SELECT "Id" FROM "Status"`).catch(console.log);
     const aStatusIds = oStatusResult.rows.map(oStatus => oStatus.Id);
     const oRetailerResult = await db.query(`SELECT "Id" FROM "Retailer"`).catch(console.log);
-    const aRetailerIds = oRetailerResult.rows.map(oRetailer => oRetailer.Id);
     const oTypeResult = await db.query(`SELECT * FROM "Type"`).catch(console.log);
     const aTypeIds = oTypeResult.rows.map(oType => oType.Id);
+    
+    let aRetailerIds;
+    const aResultsToReturn = [];
+    //Randomly decide if existing retailer will be used
+    if(getRandomInteger(0,2) && oRetailerResult.rows.length){
+        aRetailerIds = oRetailerResult.rows.map(oRetailer => oRetailer.Id);        
+    } else {
+        const oRetailerResult = await addRetailer(db);
+        aRetailerIds = [oRetailerResult.RetailerId]; 
+        aResultsToReturn.push({
+            ExecutedQuery: oRetailerResult.ExecutedQuery,
+            ResultCount: oRetailerResult.ResultCount,
+            ElapseTime: oRetailerResult.ElapseTime,
+            TimeStamp: oRetailerResult.TimeStamp
+        });   
+    }
 
     const aProductResult = await insertProduct(db, aStatusIds, aRetailerIds, aTypeIds);
     const oProduct = aProductResult[0];
    // console.log(`Inserted ${oProduct.rowCount} Product`);
    // console.log(`Elapse time ${aProductResult[2] - aProductResult[1]}`);
-    const aResultsToReturn = [
+    aResultsToReturn.push(
         {
             ExecutedQuery: 'Insert product',
             ResultCount: oProduct.rowCount,
             ElapseTime: aProductResult[2] - aProductResult[1],
             TimeStamp: new Date(aProductResult[1]) 
-        }
-    ];
+        });
 
     //Generate random boolean to decide if classificationItem will be added or not
     if (getRandomInteger(0, 2)) {

@@ -30,7 +30,7 @@ const {closeStreams, delay} = require('./utils');
   //await updateHierarchyCodesMongo(db, oModels)
   await executeQueries(db, oModels, Date.now())
   .catch(console.log);
-  return await delay(7200000);
+  return await delay(7800000);
 })().then(() => {
   console.log('Closing connections');
   mongoose.connection.close();

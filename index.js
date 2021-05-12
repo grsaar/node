@@ -31,7 +31,7 @@ async function connectDatabase() {
   //await updateHierarchyCodesPg(db)
   await executeQueries(db, Date.now())
   .catch(console.log);
-  return await delay(7200000);
+  return await delay(7800000);
 })().then(() => {
   console.log('Closing connections');
   client.end();

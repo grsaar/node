@@ -10,7 +10,8 @@ async function addRetailer(oModels) {
         ExecutedQuery: 'Insert retailer',
         ResultCount: 1,
         ElapseTime: aRetailerResult[2] - aRetailerResult[1],
-        TimeStamp: new Date(aRetailerResult[1]) 
+        TimeStamp: new Date(aRetailerResult[1]),
+        Retailer: aRetailerResult[0]
     };
 }
 
@@ -60,21 +61,36 @@ async function insertThumbnail(oModels) {
 
 async function addProduct(oModels) {
     const aStatuses = await oModels.Status.find({}, { _id: 1 }).catch(console.log);
-    const aRetailers = await oModels.Retailer.find({}, { _id: 1 }).catch(console.log);
+    const iRetailerCount = await oModels.Retailer.countDocuments({}).catch(console.log);
     const aTypes = await oModels.Type.find({}, { _id: 1 }).catch(console.log);
+
+    let aRetailers;
+    const aResultsToReturn = [];
+    //Randomly decide if existing retailer will be used
+    if(getRandomInteger(0,2) && iRetailerCount){
+        aRetailers = await oModels.Retailer.find({}, { _id: 1 }).catch(console.log);
+    } else {
+        const oRetailerResult = await addRetailer(oModels);
+        aRetailers = [oRetailerResult.Retailer]; 
+        aResultsToReturn.push({
+            ExecutedQuery: oRetailerResult.ExecutedQuery,
+            ResultCount: oRetailerResult.ResultCount,
+            ElapseTime: oRetailerResult.ElapseTime,
+            TimeStamp: oRetailerResult.TimeStamp
+        });
+    }
 
     const aProductResult = await insertProduct(oModels, aStatuses, aRetailers, aTypes);
     const oProduct = aProductResult[0];
     //console.log(`Inserted 1 product with _id: ${oProduct._id}`);
     //console.log(`Elapse time ${aProductResult[2] - aProductResult[1]}`);
-    const aResultsToReturn = [
+    aResultsToReturn.push(
         {
             ExecutedQuery: 'Insert product',
             ResultCount: 1,
             ElapseTime: aProductResult[2] - aProductResult[1],
             TimeStamp: new Date(aProductResult[1])
-        }
-    ];
+        });
 
     if (getRandomInteger(0, 2)) {
         const aProductClassificationItemResult = await insertProductClassificationItem(oModels, oProduct);
@@ -219,7 +235,7 @@ async function getCountryProducts(oModels) {
     console.log(`Get country products result: ${iProductCount} products`);
     //console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
     return {
-        ExecutedQuery: 'Get counrty products',
+        ExecutedQuery: 'Get country products',
         ResultCount: iProductCount,
         ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
         TimeStamp: new Date(sQueryStartTimestamp) 
