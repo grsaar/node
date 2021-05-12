@@ -8,6 +8,7 @@ const {updateHierarchyCodesMongo} = require('./import/classificationItemHierarch
 const {executeQueries} = require('./mongoRelational/index');
 //const {executeQueries} = require('./mongoNonRelational/index');
 const defineModels = require('./mongoRelational/models');
+const {closeStreams, delay} = require('./utils');
 
  async function connectDatabase() {
   return new Promise ((resolve, reject) => {
@@ -24,10 +25,14 @@ const defineModels = require('./mongoRelational/models');
 
 (async function () {
   const db = await connectDatabase();
-  //console.log(db);
   const oModels = defineModels(db);
   //await importDataToMongoFromCsv(oModels);
   //await updateHierarchyCodesMongo(db, oModels)
-  await executeQueries(db, oModels)
+  await executeQueries(db, oModels, Date.now())
   .catch(console.log);
-})();
+  return await delay(7200000);
+})().then(() => {
+  console.log('Closing connections');
+  mongoose.connection.close();
+  closeStreams();
+});

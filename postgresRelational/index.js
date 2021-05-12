@@ -27,7 +27,7 @@ async function executeQueries (db, sStartTime){
   }
 
 async function runQuery (db, fRunFunction, iDelay, sFileName, sStartTime){
-  while(Date.now() < sStartTime + 10000){
+  while(Date.now() < sStartTime + 7020000){
     const oDataToWrite = await fRunFunction(db);
     writeToFile(sFileName, oDataToWrite);
     //si.dockerContainerStats('*',obj => console.log(JSON.stringify(obj, null, 2)));

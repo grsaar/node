@@ -10,8 +10,8 @@ async function addProduct (db, oModels){
     const oProductData = prepareProductData(aStatuses, aCountries, aTypes, aClassificationItems, aClassifications);
     
    const aProductResult = await insertProduct(db, oProductData);   
-    const sString = `Inserted ${aProductResult[0].insertedCount} product, `.concat(`elapse time ${aProductResult[2] - aProductResult[1]} ms`);
-    console.log(sString);
+   // const sString = `Inserted ${aProductResult[0].insertedCount} product, `.concat(`elapse time ${aProductResult[2] - aProductResult[1]} ms`);
+   // console.log(sString);
     return {
         ExecutedQuery: 'Insert product',
         ResultCount: aProductResult[0].insertedCount,
@@ -88,7 +88,7 @@ async function getCountryProducts (db, oModels){
    
     const sQueryEndTimestamp = Date.now();
     console.log(`Get country products result: ${iResultCount} documents`);
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+   // console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
     return {
         ExecutedQuery: 'Get country products',
         ResultCount: iResultCount,
@@ -99,29 +99,29 @@ async function getCountryProducts (db, oModels){
 
 async function getProductsWithHierarchyCode(db, oModels) {
     const aClassificationItems = await oModels.ClassificationItem.aggregate([{ $sample: { size: 1 } }, { $project: {hierarchyCode: 1 } }]).catch(console.log);
-    const sHierarchyCode = '/' + aClassificationItems[0].hierarchyCode + '/i';
+    const sHierarchyCode = new RegExp(aClassificationItems[0].hierarchyCode,'i');
     const sQueryStartTimestamp = Date.now();
 
-    const iResultCount = await db.collection("Product").find({"classificationItems.hierarchyCode": sHierarchyCode}).count().catch(console.log);
+    const iResultCount = await db.collection("Product").find({"classificationItems.hierarchyCode":  sHierarchyCode}).count().catch(console.log);
     
     const sQueryEndTimestamp = Date.now();
     console.log(`Get products with HierarcyCode result: ${iResultCount} documents`); 
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+   // console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
     return {
         ExecutedQuery: 'Get products with hierarchyCode',
         ResultCount: iResultCount,
         ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
         TimeStamp: new Date(sQueryStartTimestamp)
-    };
+    }; 
 }
 
 async function getUnclassifiedProducts(db) {
     const sQueryStartTimestamp = Date.now();
-    const iResultCount = await db.collection("Product").find({"classificationItems": null }).count().catch(console.log);
+    const iResultCount = await db.collection("Product").find({"classificationItems": [] }).count().catch(console.log);
 
     const sQueryEndTimestamp = Date.now();
     console.log(`Get unclassified products result: ${iResultCount} documents`);
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+   // console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
     return {
         ExecutedQuery: 'Get unclassified products',
         ResultCount: iResultCount,
@@ -136,7 +136,7 @@ async function getProductsWithThumbnails(db) {
 
     const sQueryEndTimestamp = Date.now();
     console.log(`Get products with thumbnails result: ${iResultCount} documents`); 
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+   // console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
     return {
         ExecutedQuery: 'Get products with thumbnails',
         ResultCount: iResultCount,
@@ -147,11 +147,14 @@ async function getProductsWithThumbnails(db) {
 }
 
 async function getProductCount(db) {
+    const sQueryStartTimestamp = Date.now();
     const iCountResult = await db.collection("Product").countDocuments({}).catch(console.log);
+    const sQueryEndTimestamp = Date.now();
+    console.log(`Get products count: ${iCountResult} rows`);
     return {
         ExecutedQuery: 'Get product count',
         ResultCount: iCountResult,
-        ElapseTime: '',
+        ElapseTime: sQueryEndTimestamp - sQueryStartTimestamp,
         TimeStamp: new Date(Date.now()) 
     }
 }
@@ -174,8 +177,8 @@ async function updateProductsStatuses (db, oModels){
         }).catch(console.log);
 
     const sQueryEndTimestamp = Date.now();    
-    console.log(`Updated status for ${oResult.modifiedCount} products`);
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+    //console.log(`Updated status for ${oResult.modifiedCount} products`);
+    //console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
     return {
         ExecutedQuery: 'Update product statuses',
         ResultCount: oResult.modifiedCount,
@@ -199,8 +202,8 @@ async function updateProductName (db){
         });
 
     const sQueryEndTimestamp = Date.now();  
-    console.log(`Updated name for ${oResult.modifiedCount} product`);
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+   // console.log(`Updated name for ${oResult.modifiedCount} product`);
+   // console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
     return {
         ExecutedQuery: 'Update product name',
         ResultCount: oResult.modifiedCount,
@@ -217,8 +220,8 @@ async function deleteRandomProduct (db){
     const oDeleteResult = await db.collection("Product").deleteOne({ _id: { $eq: oProductId }});
 
     const sQueryEndTimestamp = Date.now();
-    console.log(`Deleted ${oDeleteResult.deletedCount} product`);
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+   // console.log(`Deleted ${oDeleteResult.deletedCount} product`);
+   // console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
     return {
         ExecutedQuery: 'Delete product',
         ResultCount: oDeleteResult.deletedCount,

@@ -76,7 +76,8 @@ function prepareContainerStatsData(oData, sFilePath){
     throttlingDataPeriods: oData[0].cpuStats.throttling_data.periods,
     throttlingDataThrottledPeriods: oData[0].cpuStats.throttling_data.throttled_periods,
     throttlingDataThrottledTime: oData[0].cpuStats.throttling_data.throttled_time,
-    memoryStatsMaxUsage: oData[0].memoryStats.max_usage
+    memoryStatsMaxUsage: oData[0].memoryStats.max_usage,
+    timeStamp: new Date(Date.now())
   }
   const csv = json2Csv(oDataToWrite, { header: !oStreams[sFilePath] ? true : false }) + '\r\n';
   return csv;

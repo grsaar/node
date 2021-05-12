@@ -12,8 +12,8 @@ async function addProduct (db){
     const aProductData = prepareProductData(oStatusResult.rows, oCountriesResult.rows, oTypeResult.rows, oClassificationItemsResult.rows, oClassificationResult.rows);
    
     const aProductResult = await insertProduct(db, aProductData);
-    console.log(`Inserted ${aProductResult[0].rowCount} product`);
-    console.log(`Elapse time ${aProductResult[2] - aProductResult[1]}`);
+    //console.log(`Inserted ${aProductResult[0].rowCount} product`);
+    //console.log(`Elapse time ${aProductResult[2] - aProductResult[1]}`);
     return {
         ExecutedQuery: 'Insert product',
         ResultCount: aProductResult[0].rowCount,
@@ -80,8 +80,8 @@ async function getCountryProducts(db){
                                             WHERE ("Data" -> 'retailer' -> 'country' ->> 'InternalId')::int = ${oCountryResult.rows[0].InternalId}`)
                                             .catch(console.log);
     const sQueryEndTimestamp = Date.now();
-    console.log(`Get country products result: ${oProductResult.rowCount} rows`);
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+   //console.log(`Get country products result: ${oProductResult.rowCount} rows`);
+    //console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
     return {
         ExecutedQuery: 'Get counrty products',
         ResultCount: oProductResult.rowCount,
@@ -100,8 +100,8 @@ async function getProductsWithHierarchyCode(db){
                                         WHERE  (classificationItems.ClassificationItem ->> 'HierarchyCode') LIKE '${sHierarchyCode}'`)
                                                                             .catch(console.log);   
     const sQueryEndTimestamp = Date.now();                                                                                                                        
-    console.log(`Get products with HierarcyCode result: ${oProductResult.rowCount} rows`);                    
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
+   // console.log(`Get products with HierarcyCode result: ${oProductResult.rowCount} rows`);                    
+   // console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
     return {
         ExecutedQuery: 'Get products with hierarchyCode',
         ResultCount: oProductResult.rowCount,
@@ -117,8 +117,8 @@ async function getUnclassifiedProducts (db){
                                                         WHERE jsonb_array_length(("Product"."Data"::jsonb)->'classificationItems') = 0`)
                                                         .catch(console.log);
     const sQueryEndTimestamp = Date.now();    
-    console.log(`Get unclassified products result: ${oUnclassifiedProductsResult.rowCount} rows`); 
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);  
+   // console.log(`Get unclassified products result: ${oUnclassifiedProductsResult.rowCount} rows`); 
+   // console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);  
     return {
         ExecutedQuery: 'Get unclassified products',
         ResultCount: oUnclassifiedProductsResult.rowCount,
@@ -133,7 +133,7 @@ async function getProductsWithThumbnails (db){
                                                           WHERE "Product"."Data"->'thumbnail' is not null`).catch(console.log);
     const sQueryEndTimestamp = Date.now(); 
     console.log(`Get products with thumbnails result: ${oProductsWithThumbnailsResult.rowCount} rows`);  
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`); 
+   // console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`); 
     return {
         ExecutedQuery: 'Get products with thumbnails',
         ResultCount: oProductsWithThumbnailsResult.rowCount,
@@ -146,6 +146,7 @@ async function getProductCount(db) {
     const sQueryStartTimestamp = Date.now();
     const oCountResult =  await db.query(`SELECT COUNT(*) FROM "Product"`).catch(console.log);
     const sQueryEndTimestamp = Date.now(); 
+    console.log(`Get products count: ${oCountResult.rows[0].count} rows`);
     return {
         ExecutedQuery: 'Get product count',
         ResultCount: oCountResult.rows[0].count,
@@ -166,8 +167,8 @@ async function updateProductsStatuses (db){
                                     WHERE ("Data" -> 'status' ->> 'InternalId')::int = ${iConditionStatusId}
                                     AND ("Data" -> 'type' ->> 'InternalId')::int = ${aTypeResult.rows[0].InternalId}`).catch(console.log);
     const sQueryEndTimestamp = Date.now();
-    console.log(`Updated status for ${oUpdateResult.rowCount} products`); 
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);  
+    //console.log(`Updated status for ${oUpdateResult.rowCount} products`); 
+    //console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);  
     return {
         ExecutedQuery: 'Update product statuses',
         ResultCount: oUpdateResult.rowCount,
@@ -185,8 +186,8 @@ async function updateProductName(db){
                                     SET "Data" = jsonb_set("Data"::jsonb, '{name}', '"${sName}"')
                                     WHERE "Product"."Id" = ${oProductResult.rows[0].Id}`).catch(console.log);
     const sQueryEndTimestamp = Date.now(); 
-    console.log(`Updated name for ${oUpdateResult.rowCount} product`);                                  
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`); 
+    //console.log(`Updated name for ${oUpdateResult.rowCount} product`);                                  
+    //console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`); 
     return {
         ExecutedQuery: 'Update product name',
         ResultCount: oUpdateResult.rowCount,
@@ -201,8 +202,8 @@ async function deleteRandomProduct (db){
     const oDeleteResult = await db.query(`DELETE FROM "Product"
                                         WHERE "Id" = ${oProduct.rows[0].Id}`).catch(console.log);
     const sQueryEndTimestamp = Date.now();
-    console.log(`Deleted ${oDeleteResult.rowCount} product`);
-    console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`); 
+   // console.log(`Deleted ${oDeleteResult.rowCount} product`);
+   // console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`); 
     return {
         ExecutedQuery: 'Delete product',
         ResultCount: oDeleteResult.rowCount,
