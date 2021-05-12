@@ -398,9 +398,10 @@ async function deleteRandomProduct(oModels) {
     const sQueryStartTimestamp = Date.now();
 
     const oDeleteResult = await oModels.Product.deleteOne({ _id: { $eq: oProductId } });
+    const oProductClItemDeleteResult = await oModels.ProductClassificationItem.deleteOne({ _productId: { $eq: oProductId } });
 
     const sQueryEndTimestamp = Date.now();
-   // console.log(`Deleted ${oDeleteResult.deletedCount} product`);
+    console.log(`Deleted ${oDeleteResult.deletedCount} product and ${oProductClItemDeleteResult.deletedCount} product classification item`);
    // console.log(`Elapse time ${sQueryEndTimestamp - sQueryStartTimestamp}`);
     return {
         ExecutedQuery: 'Delete product',

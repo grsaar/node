@@ -6,21 +6,21 @@ const si = require('systeminformation');
 const {writeToFile, delay} = require('../utils');
 
 async function executeQueries (db, sStartTime){
-  const sQueryResultsFileName = '../postgresNonRelationalQueryResults.csv';
-  const sContainerStatsFileName = '../postgresNonRelationalContainerStats.csv';
+  const sQueryResultsFileName = '../postgresNonRelationalQueryResults_vol2.csv';
+  const sContainerStatsFileName = '../postgresNonRelationalContainerStats_vol2.csv';
   
-    runQuery(db, addProduct, 500, sQueryResultsFileName, sStartTime);
-    setTimeout(runQuery, 10000, db, getCountryProducts, 10000, sQueryResultsFileName, sStartTime);
-    setTimeout(runQuery, 12000, db, getProductsWithHierarchyCode, 10000, sQueryResultsFileName, sStartTime);
-    setTimeout(runQuery, 14000, db, getUnclassifiedProducts, 10000, sQueryResultsFileName, sStartTime);
-    setTimeout(runQuery, 16000, db, getProductsWithThumbnails, 10000, sQueryResultsFileName, sStartTime);
-    setTimeout(runQuery, 18000, db, updateProductsStatuses, 10000, sQueryResultsFileName, sStartTime);
-    setTimeout(runQuery, 20000, db, updateProductName, 10000, sQueryResultsFileName, sStartTime);
-    setTimeout(runQuery, 2000, db, deleteRandomProduct, 10000, sQueryResultsFileName, sStartTime);  
+    runQuery(db, addProduct, 100, sQueryResultsFileName, sStartTime);
+    setTimeout(runQuery, 2000, db, getCountryProducts, 2000, sQueryResultsFileName, sStartTime);
+    setTimeout(runQuery, 2400, db, getProductsWithHierarchyCode, 2000, sQueryResultsFileName, sStartTime);
+    setTimeout(runQuery, 2800, db, getUnclassifiedProducts, 2000, sQueryResultsFileName, sStartTime);
+    setTimeout(runQuery, 3200, db, getProductsWithThumbnails, 2000, sQueryResultsFileName, sStartTime);
+    setTimeout(runQuery, 3600, db, updateProductsStatuses, 2000, sQueryResultsFileName, sStartTime);
+    setTimeout(runQuery, 4000, db, updateProductName, 2000, sQueryResultsFileName, sStartTime);
+    setTimeout(runQuery, 400, db, deleteRandomProduct, 2000, sQueryResultsFileName, sStartTime);  
 
-    setTimeout(runQuery, 2000, db, getProductCount, 5000, sQueryResultsFileName, sStartTime);
+    setTimeout(runQuery, 400, db, getProductCount, 1000, sQueryResultsFileName, sStartTime);
     
-    setTimeout(runQuery, 2000, '*', si.dockerContainerStats, 2000, sContainerStatsFileName, sStartTime);
+    setTimeout(runQuery, 400, '*', si.dockerContainerStats, 400, sContainerStatsFileName, sStartTime);
 }
 
 async function runQuery (db, fRunFunction, iDelay, sFileName, sStartTime){
